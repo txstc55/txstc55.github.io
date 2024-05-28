@@ -9,8 +9,8 @@
       id="threejsContainer"
       class="fixed w-full h-full overscroll-none animate ease-in-out top-0 duration-500"
       :class="{
-        'opacity-1 scale-100': scrollTopPercent <= 0.75,
-        'opacity-0 -top-96 scale-50': scrollTopPercent > 0.75,
+        'opacity-1 scale-100': scrollTopPercent <= this.hidingCoeff,
+        'opacity-0 scale-0': scrollTopPercent > this.hidingCoeff,
         'background-color': 'rgba(240, 179, 188)',
       }"
     ></div>
@@ -38,29 +38,25 @@ var curve = new THREE.CatmullRomCurve3(points);
 curve.closed = true;
 
 const greetings = [
-  "HELLO",     // English
-  "HOLA",        // Spanish
-  "BONJOUR",     // French
-  "HALLO",       // German
-  "CIAO",        // Italian
-  "OLÁ",         // Portuguese
-  "ПРИВЕТ",      // Russian (PRIVET)
-  "你好",         // Chinese (Mandarin) (NǏ HǍO)
-  "こんにちは",   // Japanese (KONNICHIWA)
-  "안녕하세요",   // Korean (ANNYEONGHASEYO)
-  "MERHABA",     // Turkish
-  "HALLO",       // Dutch
-  "ΓΕΙΑ ΣΟΥ",    // Greek (GEIA SOU)
-  "CZEŚĆ",       // Polish
-  "HEJ",         // Swedish
+  "HELLO", // English
+  "HOLA", // Spanish
+  "BONJOUR", // French
+  "HALLO", // German
+  "CIAO", // Italian
+  "ПРИВЕТ", // Russian (PRIVET)
+  "你好", // Chinese (Mandarin) (NǏ HǍO)
+  "こんにちは", // Japanese (KONNICHIWA)
+  "안녕하세요", // Korean (ANNYEONGHASEYO)
 ];
 // shuffle and join the greetings
-let text_sentence = (greetings.sort(() => Math.random() - 0.5).join("---") + "---").repeat(4);
+let text_sentence = (
+  greetings.sort(() => Math.random() - 0.5).join("----") + "----"
+).repeat(5);
 var curve_texts = [];
 for (let i = 0; i < text_sentence.length; i++) {
   const curve_text = new Text();
   curve_text.text = text_sentence[i];
-  curve_text.fontSize = 0.20;
+  curve_text.fontSize = 0.18;
   curve_text.color = 0xffffff;
   curve_text.anchorX = "center";
   curve_text.anchorY = "middle";
@@ -131,10 +127,11 @@ export default {
       scrollTopPercent: 0,
       stopAnimation: false,
       curve_progress: 0, // progress of the curve
-      curve_speed: 0.00003, // speed of text movement on the curve
-      gap_between_chars: 0.0020, // gap between characters for the curve
+      curve_speed: 0.00002, // speed of text movement on the curve
+      gap_between_chars: 0.0025, // gap between characters for the curve
       x_percent: 0.0, // position of the mouse on x-axis
       y_percent: 0.0, // position of the mouse on y-axis
+      hidingCoeff: 0.75, // hide the canvas if scrollTopPercent is pass this
     };
   },
   async mounted() {
@@ -239,11 +236,11 @@ export default {
         this.minZ;
       this.scrollTopPercent =
         document.documentElement.scrollTop / (4 * this.windowHeight);
-      if (this.scrollTopPercent >= 0.75) {
+      if (this.scrollTopPercent > this.hidingCoeff) {
         this.renderer.setClearColor("rgb(240, 179, 188)", 1);
         this.stopAnimation = true;
       } else {
-        if (oldScrollTopPercent >= 0.75) {
+        if (oldScrollTopPercent > this.hidingCoeff) {
           this.stopAnimation = false;
           this.renderer.setClearColor(
             this.backgroundColors[this.colorChoice],
@@ -269,7 +266,9 @@ export default {
       rotation_matrix.makeRotationFromEuler(
         new THREE.Euler(rotation_around_x, rotation_around_y, 0),
       );
-      const rotatedPoints = points.map(point => point.clone().applyMatrix4(rotation_matrix));
+      const rotatedPoints = points.map((point) =>
+        point.clone().applyMatrix4(rotation_matrix),
+      );
 
       // Create a new curve with the rotated points
       curve = new THREE.CatmullRomCurve3(rotatedPoints);
@@ -280,7 +279,7 @@ export default {
 
       const aspectRatio =
         this.threejsContainer.clientWidth / this.threejsContainer.clientHeight;
-      this.camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.5, 1000);
+      this.camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.4, 1000);
       this.camera.position.z = 20.0;
 
       this.renderer = new THREE.WebGLRenderer({
@@ -485,9 +484,7 @@ export default {
         // curve = new THREE.CatmullRomCurve3(rotatedPoints);
         // curve.closed = true;
 
-
         for (let i = 0; i < curve_texts.length; i++) {
-
           // Get the position along the curve
           const P2 = curve.getPoint(
             (me.curve_progress - me.gap_between_chars * i) % 1,
@@ -520,8 +517,6 @@ export default {
           xAxis.crossVectors(yAxis, zAxis).normalize();
           // Create a matrix from the basis vectors
           const matrix = new THREE.Matrix4().makeBasis(xAxis, yAxis, zAxis);
-          // Set the rotation of the square based on the matrix
-          curve_texts[i].setRotationFromMatrix(matrix);
 
           // Calculate vectors from P1 to P2 and from P1 to P3
           const vector12 = new THREE.Vector3().subVectors(P2, P1);
@@ -544,28 +539,33 @@ export default {
           );
 
           var area =
-            -(60000 *
+            -(
+              60000 *
               (crossProduct123.length() +
                 crossProduct241.length() +
-                crossProduct315.length())) /
+                crossProduct315.length())
+            ) /
               3.0 +
             1.0;
           area = Math.sqrt(Math.max(area, 0.16));
           const scaling = 1 - me.scrollTopPercent;
           let p2Copy = P2.clone();
-          p2Copy.x *= Math.min(1.40 * scaling, 1.2);
-          p2Copy.y *= Math.min(1.40 * scaling, 1.2);
-          p2Copy.y += 1.8 + (1 - scaling) * 0.6; // make sure it always look like its in center
-          p2Copy.z *= Math.min(1.40 * scaling, 1.2);
-          p2Copy.z += 5.0 - me.scrollTopPercent * 6.2;
+          p2Copy.x *= 1.2 * scaling;
+          p2Copy.y *= 1.2 * scaling;
+          p2Copy.y += 1 + me.scrollTopPercent * 1.66666; // y final is 2.25
+          p2Copy.z *= 1.2 * scaling;
+          p2Copy.z += 10.0 - me.scrollTopPercent * 12.633333; // camera ending positon is 1.25
+
+          // Set the rotation of the square based on the matrix
+          curve_texts[i].setRotationFromMatrix(matrix);
           curve_texts[i].position.copy(p2Copy);
           curve_texts[i].scale.set(
             area * scaling * (P2.z * 0.25 + 0.75),
             area * scaling * (P2.z * 0.25 + 0.75),
             area * scaling * (P2.z * 0.25 + 0.75),
           );
-          curve_texts[i].sync();
         }
+        // console.log(me.camera.position.z, me.scrollTopPercent);
       }, 1000 / 120);
       if (!this.stopAnimation) {
         this.renderer.render(scene, this.camera);
