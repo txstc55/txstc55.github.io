@@ -406,7 +406,7 @@ export default {
         scene.add(sentenceMesh);
 
         // add another mesh for welcoming people
-        const geometry1 = new THREE.PlaneGeometry(width, height, 1, 1);
+        const geometry1 = new THREE.PlaneGeometry(width * 3.0, height * 3.0, 1, 1);
         me.helloShaderMaterial = new THREE.ShaderMaterial({
           uniforms: {
             cutoutImage: { value: me.centerCutoutTexture },
@@ -421,6 +421,7 @@ export default {
             minZ: {value: me.minZ},
             maxY: {value: 4.0},
             maxHeightOrWidth: {value: me.maxHeightOrWidth},
+            scaleUp: {value: 3.0},
           },
           vertexShader: me.helloShader.vertexShader,
           fragmentShader: me.helloShader.fragmentShader,

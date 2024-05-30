@@ -1,20 +1,12 @@
 class helloShader {
   constructor() {
     this.vertexShader = `
-      attribute vec3 aPosition; // Vertex position
-      attribute vec2 aUV;       // UV coordinates
-
-      uniform mat4 uModelViewMatrix;  // Model-View matrix
-      uniform mat4 uProjectionMatrix; // Projection matrix
-
-      varying vec4 vClipPos;    // Pass clip space position to the fragment shader
       varying vec2 vUv;
       void main() {
       // Transform the vertex position to clip space
           vUv = uv;
           // Set the final position
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          vClipPos = gl_Position;
       }
     `;
     this.fragmentShader = `
@@ -25,13 +17,13 @@ class helloShader {
       uniform float height;
       uniform float time;
       varying vec2 vUv;
-      varying vec4 vClipPos;
       uniform float mouse_x_percent;
       uniform float mouse_y_percent;
       uniform float maxZ;
       uniform float minZ;
       uniform float maxY;
       uniform float maxHeightOrWidth;
+      uniform float scaleUp;
 
 
       vec3 perpendicularDistance(float x, float y, float alpha, float beta){
@@ -72,18 +64,22 @@ class helloShader {
 
       void main(){
         // add transition to the boat and everything
-        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 32.0 + mouse_x_percent / 4.5;
+        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 28.0 + mouse_x_percent / 3.5;
         // floatFactor = 0.0;
         float x_middle = 0.5 + floatFactor * (1.0 - scrollTopPercent);
         float x_left = 0.49 + floatFactor * (1.0 - scrollTopPercent);
         float x_right = 0.52 + floatFactor * (1.0 - scrollTopPercent);
         float alpha = 1.0;
         float beta = 0.0;
+        vec2 vUvNew = vUv;
+        float sideScale = floor(scaleUp / 2.0);
+        vUvNew.x = (vUv.x - (1.0 / scaleUp) * sideScale) * scaleUp;
+        vUvNew.y = (vUv.y - (1.0 / scaleUp) * sideScale) * scaleUp;
 
         // for computing the waves
-        float sinWave0 = wave0(vUv.x);
-        float sinWave1 = wave1(vUv.x);
-        float sinWave2 = wave2(vUv.x);
+        float sinWave0 = wave0(vUvNew.x);
+        float sinWave1 = wave1(vUvNew.x);
+        float sinWave2 = wave2(vUvNew.x);
         float sinWaveBoundary0 = sinWave0 / 90.0 + scrollTopPercent * 0.3 + 0.42;
         float sinWaveBoundary1 = sinWave1 / 95.0 + scrollTopPercent * 0.34 + 0.42;
         float sinWaveBoundary2 = sinWave2 / 93.0 + scrollTopPercent * 0.38 + 0.42;
@@ -110,11 +106,11 @@ class helloShader {
         }
         beta = middleHeight - alpha * x_middle * width;
 
-        if (texture2D(cutoutImage, vUv).a > 0.0){
+        if (texture2D(cutoutImage, vUvNew).a > 0.0){
           // we first draw a sun
           const vec2 sunPos = vec2(0.3, 0.8);
           float sunRadius = 50.0;
-          float sunDist = distance(vec2(vUv.x * width, vUv.y * height), vec2(sunPos.x * width, sunPos.y * height));
+          float sunDist = distance(vec2(vUvNew.x * width, vUvNew.y * height), vec2(sunPos.x * width, sunPos.y * height));
           // draw the sky color
           vec4 sunColor = vec4(245.0 / 255.0, 231.0 / 255.0, 202.0 / 255.0, 1.0);
           vec4 skyColor = vec4(250.0/255.0, 152.0/255.0, 200.0/255.0, 1.0);
@@ -122,15 +118,15 @@ class helloShader {
 
           // draw the sun
           if (sunDist < sunRadius){
-            if (rand(vec2(fract(vUv.x) * 13.9 + floor(time * 4.0), vUv.y)) > 0.1){
+            if (rand(vec2(fract(vUvNew.x) * 13.9 + floor(time * 4.0), vUvNew.y)) > 0.1){
               gl_FragColor = sunColor;
             }
           }
 
           // draw sun rays
-          float angle = atan(vUv.y - sunPos.y, vUv.x - sunPos.x) + floor(time * 1.3);
+          float angle = atan(vUvNew.y - sunPos.y, vUvNew.x - sunPos.x) + floor(time * 1.3);
           if (mod(angle, 0.3) < 0.03 && sunDist < sunRadius * 5.0 && sunDist > sunRadius){
-            if (rand(vec2(fract(vUv.x) * 13.9 + floor(time * 3.0), vUv.y)) > 0.1){
+            if (rand(vec2(fract(vUvNew.x) * 13.9 + floor(time * 3.0), vUvNew.y)) > 0.1){
               gl_FragColor = mix(sunColor, skyColor, sunDist /((sunRadius) * 5.0));
             }
           }
@@ -142,25 +138,25 @@ class helloShader {
           // we now draw a boat
 
           float bottomOffset = 20.0;
-          vec3 pDistance = perpendicularDistance(vUv.x * width, vUv.y * height + bottomOffset, alpha, beta);
+          vec3 pDistance = perpendicularDistance(vUvNew.x * width, vUvNew.y * height + bottomOffset, alpha, beta);
           float lengthOnLine = length(pDistance.xy - vec2(x_middle * width, middleHeight));
           float bottomLength = 0.12 * width;
           float topLength = 0.18 * width;
           // gl_FragColor = vec4(lengthOnLine * 10.0, lengthOnLine * 10.0, lengthOnLine * 10.0, 1.0);
 
           // the boat body
-          if (pDistance.z > 0.0 && pDistance.z < 130.0 + rand(vec2(vUv.y, vUv.x)) * 6.0 && (vUv.y * height + 10.0) > pDistance.y && lengthOnLine < mix(bottomLength, topLength, pDistance.z / (130.0)) + rand(vUv + floor(time * 10.0)) * 6.0){
-            if (rand(vec2(vUv.x * height, vUv.y * width+  floor(time * 17.0))) > 0.05){
+          if (pDistance.z > 0.0 && pDistance.z < 130.0 + rand(vec2(vUvNew.y, vUvNew.x)) * 6.0 && (vUvNew.y * height + 10.0) > pDistance.y && lengthOnLine < mix(bottomLength, topLength, pDistance.z / (130.0)) + rand(vUvNew + floor(time * 10.0)) * 6.0){
+            if (rand(vec2(vUvNew.x * height, vUvNew.y * width+  floor(time * 17.0))) > 0.05){
               gl_FragColor = vec4(255.0 / 255.0, 159.0 / 255.0, 28.0 / 255.0, 1.0);
             }
-            if (pDistance.z - 8.0 < rand(vec2(vUv.y + time, vUv.x)) * 6.0 || pDistance.z > 130.0 || (lengthOnLine + 4.0) > mix(bottomLength, topLength, pDistance.z / (130.0)) + rand(vUv + floor(time * 10.0)) * 4.0){
+            if (pDistance.z - 8.0 < rand(vec2(vUvNew.y + time, vUvNew.x)) * 6.0 || pDistance.z > 130.0 || (lengthOnLine + 4.0) > mix(bottomLength, topLength, pDistance.z / (130.0)) + rand(vUvNew + floor(time * 10.0)) * 4.0){
               gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
             }
           }
 
           // draw the pillar
-          if (pDistance.z >= 128.0 + rand(vec2(vUv.y, vUv.x)) * 10.0 && pDistance.z <= 360.0 && (vUv.y * height + 10.0) > pDistance.y && lengthOnLine <= 16.0 + rand(vUv + floor(time * 10.0)) * 6.0){
-            if (rand(vec2(vUv.x * height + floor(time * 13.0), vUv.y * width)) > 0.05){
+          if (pDistance.z >= 128.0 + rand(vec2(vUvNew.y, vUvNew.x)) * 10.0 && pDistance.z <= 360.0 && (vUvNew.y * height + 10.0) > pDistance.y && lengthOnLine <= 16.0 + rand(vUvNew + floor(time * 10.0)) * 6.0){
+            if (rand(vec2(vUvNew.x * height + floor(time * 13.0), vUvNew.y * width)) > 0.05){
               gl_FragColor = vec4(255.0 / 255.0, 193.0 / 255.0, 104.0 / 255.0, 1.0);
             }
             if (lengthOnLine >= 16.0){
@@ -169,23 +165,46 @@ class helloShader {
           }
 
           // draw the sea
-          if (vUv.y < sinWaveBoundary0){
+          if (vUvNew.y < sinWaveBoundary0){
             gl_FragColor = mix(vec4(100.0 / 255.0, 185.0 / 255.0, 225.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
           }
-          if (vUv.y < sinWaveBoundary1){
+          if (vUvNew.y < sinWaveBoundary1){
             gl_FragColor = mix(vec4(30.0 / 255.0, 215.0 / 255.0, 195.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
           }
-          if (vUv.y < sinWaveBoundary2){
+          if (vUvNew.y < sinWaveBoundary2){
             gl_FragColor = mix(vec4(80.0 / 255.0, 235.0 / 255.0, 225.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
           }
 
         }
 
 
-        if (texture2D(cutoutImage, vUv).a > 0.0 || texture2D(cutoutImage, vUv).a < 1.0){
+        if (texture2D(cutoutImage, vUvNew).a > 0.0 || texture2D(cutoutImage, vUvNew).a < 1.0 || vUvNew.y <= 0.0 || vUvNew.y >= 1.0 || vUvNew.x <= 0.0 || vUvNew.x >= 1.0){
+          // add glitch effect for out of bound content
+          if (texture2D(cutoutImage, vUvNew).a == 0.0){
+            if (mod(time, 1.5) < 0.3){
+              float originalX = vUvNew.x;
+              float modX = mod(originalX, 0.04 * (sin(floor(time * 7.0)) + 1.0) / 2.0);
+              if (modX < (0.04 / 2.0)){
+                vUvNew.x = originalX + (0.04) - modX;
+              }else{
+                vUvNew.x = originalX - modX;
+              }
+
+
+              float originalY = vUvNew.y;
+              float modYFactor = 0.03 * (sin(floor(time * 13.0)) + 1.0) / 2.0;
+              float modY = mod(originalY, modYFactor);
+              if (modY < (modYFactor / 2.0)){
+                vUvNew.y = originalY + (modYFactor / 2.0) - modY;
+              }else{
+                vUvNew.y = originalY - (modYFactor / 2.0);
+              }
+            }
+          }
+
           // draw the sign
           vec2 centerPoint = pointAboveLine(x_middle * width, alpha, beta, 350.0);
-          float toCenterDistance = length(vec2(vUv.x * width, vUv.y * height) - centerPoint);
+          float toCenterDistance = length(vec2(vUvNew.x * width, vUvNew.y * height) - centerPoint);
 
 
           vec2 pupilCenter = centerPoint;
@@ -206,7 +225,7 @@ class helloShader {
             displacementX[i] = 24.0 * (2.0 * rand(vec2(10.0, float(i) + floor(time * 1.7))) - 1.0) + mouse_x_percent * 80.0;
             displacementY[i] = 18.0 * (2.0 * rand(vec2(9.0 + floor(time * 13.0), float(i + 12))) - 1.0) + (mouse_y_percent - planePositionY) * 40.0 - 10.0;
           }
-          float radius = texture2D(cutoutImage, vUv).a > 0.0 ? 140.0 : 130.0;
+          float radius = texture2D(cutoutImage, vUvNew).a > 0.0 ? 140.0 : 130.0;
           if (toCenterDistance < radius){
             gl_FragColor = vec4(255.0 / 255.0, 24.0 / 255.0, 78.0 / 255.0, 1.0);
 
@@ -221,32 +240,32 @@ class helloShader {
             float a1 = radius - 2.0;
             float b1 = (radius / 2.5) * timeFactor;
             // float b0 = ((cos(time) + 1.0) / 2.0) * (radius / 2.0 + 5.0);
-            float val0 = pow(vUv.x * width - centerPoint.x, 2.) / pow(a0, 2.) + pow(vUv.y * height - centerPoint.y + 20.0 * timeFactor, 2.) / pow(b0, 2.);
-            float val1 = pow(vUv.x * width - centerPoint.x, 2.) / pow(a1, 2.) + pow(vUv.y * height - centerPoint.y - 11.0 * timeFactor, 2.) / pow(b1, 2.);
-            if ((vUv.y * height >= centerPoint.y && val0 < 1.0) || (vUv.y * height < centerPoint.y && val1 < 1.0)){
+            float val0 = pow(vUvNew.x * width - centerPoint.x, 2.) / pow(a0, 2.) + pow(vUvNew.y * height - centerPoint.y + 20.0 * timeFactor, 2.) / pow(b0, 2.);
+            float val1 = pow(vUvNew.x * width - centerPoint.x, 2.) / pow(a1, 2.) + pow(vUvNew.y * height - centerPoint.y - 11.0 * timeFactor, 2.) / pow(b1, 2.);
+            if ((vUvNew.y * height >= centerPoint.y && val0 < 1.0) || (vUvNew.y * height < centerPoint.y && val1 < 1.0)){
               gl_FragColor = vec4(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0, 1.0);
 
               // draw the pupil
               for (int i = 0; i < 22; i++){
                 pupilCenter = centerPoint + vec2(displacementX[i], displacementY[i] + 15.0);
-                float pupilRadius = 55.0 + rand(vUv) * 5.0;
-                float distanceToPupil = length(vec2(vUv.x * width, vUv.y * height) - pupilCenter);
-                if (distanceToPupil < pupilRadius && distanceToPupil > 52.0 + rand(vec2(vUv.y, vUv.x) * 4.0)){
+                float pupilRadius = 55.0 + rand(vUvNew) * 5.0;
+                float distanceToPupil = length(vec2(vUvNew.x * width, vUvNew.y * height) - pupilCenter);
+                if (distanceToPupil < pupilRadius && distanceToPupil > 52.0 + rand(vec2(vUvNew.y, vUvNew.x) * 4.0)){
                   gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
                 }
               }
 
               // draw the eye lines
-              if (vUv.y * height >= centerPoint.y && val0 > 0.85 + rand(vUv) * 0.15){
+              if (vUvNew.y * height >= centerPoint.y && val0 > 0.85 + rand(vUvNew) * 0.15){
                 gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
               }
-              if (vUv.y * height < centerPoint.y && val1 > 0.85 + rand(vUv) * 0.15){
+              if (vUvNew.y * height < centerPoint.y && val1 > 0.85 + rand(vUvNew) * 0.15){
                 gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
               }
             }
           }
 
-          if (toCenterDistance > radius - rand(vec2(vUv.x * width, vUv.y * height)) * 5.0 && toCenterDistance < radius + 2.0 * rand(vec2(vUv.x + time, vUv.y * vUv.x))){
+          if (toCenterDistance > radius - rand(vec2(vUvNew.x * width, vUvNew.y * height)) * 5.0 && toCenterDistance < radius + 2.0 * rand(vec2(vUvNew.x + time, vUvNew.y * vUvNew.x))){
             gl_FragColor = vec4(.0, .0, .0, 1.0);
           }
         }
