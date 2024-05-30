@@ -478,7 +478,7 @@ export default {
           me.helloShaderMaterial.uniforms.time.value += 0.02;
           me.helloShaderMaterial.uniforms.mouse_x_percent.value = me.x_percent_lerped;
           me.helloShaderMaterial.uniforms.mouse_y_percent.value = me.y_percent_lerped;
-          console.log(me.y_percent_lerped);
+          // console.log(me.y_percent_lerped);
         }
       }, 1000 / 60);
       if (!this.stopAnimation) {
