@@ -3,7 +3,7 @@
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
-    <div class="w-full h-screen bg-white"></div>
+    <div class="w-full h-screen blank"></div>
     <div
       ref="threejsContainer"
       id="threejsContainer"
@@ -491,6 +491,7 @@ export default {
 
 <style scoped>
 .blank {
-  background-color: rgb(240, 179, 188);
+  /* background-color: rgb(240, 179, 188); */
+  background-color: black;
 }
 </style>
