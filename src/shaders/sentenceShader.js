@@ -91,10 +91,10 @@ class sentenceShader {
             gl_FragColor = texture2D(sentenceTexture11, vec2(xPercent, yPercent));
           }
 
-          if (xPercent * sentenceWidths[choice] < 25.0 || (1.0 - xPercent) * sentenceWidths[choice] < 25.0){
+          if (xPercent * sentenceWidths[choice] < 5.0 || (1.0 - xPercent) * sentenceWidths[choice] < 5.0){
             gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
           }
-          if (yPercent * sentenceHeights[choice] < 25.0 || (1.0 - yPercent) * sentenceHeights[choice] < 25.0){
+          if (yPercent * sentenceHeights[choice] < 5.0 || (1.0 - yPercent) * sentenceHeights[choice] < 5.0){
             gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
           }
           return;

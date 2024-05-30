@@ -149,8 +149,8 @@ export default {
     // generate a texture from a sentence
     generateTextureFromSentence(
       sentence,
-      fontSize = 500,
-      padding = 100,
+      fontSize = 100,
+      padding = 10,
       color = null,
       fontFamily = "Asap",
     ) {
