@@ -3,17 +3,22 @@
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
-    <div class="w-full h-screen blank"></div>
+    <div class="w-full h-screen bg-white"></div>
     <div
       ref="threejsContainer"
       id="threejsContainer"
-      class="fixed w-full h-full overscroll-none animate ease-in-out top-0 duration-500"
+      class="w-full h-full overscroll-none"
       :class="{
-        'opacity-1 scale-100': scrollTopPercent <= this.hidingCoeff,
-        'opacity-0 scale-0': scrollTopPercent > this.hidingCoeff,
-        'background-color': 'rgba(240, 179, 188)',
+        'fixed translate-y-0 top-0': scrollTopPercent <= this.hidingCoeff,
+        '-translate-y-full absolute': scrollTopPercent > this.hidingCoeff,
       }"
-    ></div>
+    >
+      <div class="absolute bottom-0 text-white text-center w-full animate-bounce animate duration-500 ease-in-out select-none"
+     :class="{
+        'opacity-0': scrollTopPercent > 0.1,
+        'opacity-100': scrollTopPercent <= 0.1,
+     }" :style="{'font-family':'asap'}">Scroll for More<br>↓</div>
+    </div>
   </div>
 </template>
 
@@ -26,48 +31,7 @@ import coverImage3 from "@/assets/self.png";
 import centerCutoutImage from "@/assets/center_cut.png";
 import moebiusShader from "@/shaders/moebiusShader.js";
 import sentenceShader from "@/shaders/sentenceShader.js";
-import curve_points from "@/assets/points.json";
-import { Text } from "troika-three-text";
-
-// let's just define the curve here
-const points = curve_points.xyz.map(
-  (point) => new THREE.Vector3(point[0], point[1], point[2]),
-);
-var curve = new THREE.CatmullRomCurve3(points);
-// curve.curveType = "chordal";
-curve.closed = true;
-
-const greetings = [
-  "HELLO", // English
-  "HOLA", // Spanish
-  "BONJOUR", // French
-  "HALLO", // German
-  "CIAO", // Italian
-  "ПРИВЕТ", // Russian (PRIVET)
-  "你好", // Chinese (Mandarin) (NǏ HǍO)
-  "こんにちは", // Japanese (KONNICHIWA)
-  "안녕하세요", // Korean (ANNYEONGHASEYO)
-];
-// shuffle and join the greetings
-let text_sentence = (
-  greetings.sort(() => Math.random() - 0.5).join("----") + "----"
-).repeat(5);
-var curve_texts = [];
-for (let i = 0; i < text_sentence.length; i++) {
-  const curve_text = new Text();
-  curve_text.text = text_sentence[i];
-  curve_text.fontSize = 0.18;
-  curve_text.color = 0xffffff;
-  curve_text.anchorX = "center";
-  curve_text.anchorY = "middle";
-  // curve_text.strokeWidth = 0.001;
-  // curve_text.strokeOpacity = 1.0;
-  // curve_text.strokeColor = 0x000000;
-  curve_text.fillOpacity = 1.0;
-  curve_texts.push(curve_text);
-  // diable double side rendering
-  // curve_texts[i].material.side = THREE.FrontSide;
-}
+import helloShader from "@/shaders/helloShader.js";
 
 export default {
   name: "Home",
@@ -76,12 +40,13 @@ export default {
       threejsContainer: null, // container for the threejs canvas
       camera: null, // camera
       renderer: null, // renderer
-      maxHeightOrWidth: 22, // max height or width of the image
+      maxHeightOrWidth: 21, // max height or width of the image
       timerRandoms: [], // random values for the shader
       coverImageTexture: null, // texture for cover image
       centerCutoutImageTexture: null, // texture for the cutout image
       moebiusShaderMaterial: null, // material for the moebius shader
       sentenceShaderMaterial: null, // material for the sentence shader
+      helloShaderMaterial: null, // material for the hello shader
       imageWidth: 0, // width of the image
       imageHeight: 0, // height of the image
       hsbChoice: 0,
@@ -103,6 +68,7 @@ export default {
       sentenceTextures: [],
       moebiusShader: new moebiusShader(),
       sentenceShader: new sentenceShader(),
+      helloShader: new helloShader(),
       textColors: [
         "#112236",
         "#ffffff",
@@ -128,9 +94,12 @@ export default {
       stopAnimation: false,
       curve_progress: 0, // progress of the curve
       curve_speed: 0.00002, // speed of text movement on the curve
-      gap_between_chars: 0.0025, // gap between characters for the curve
-      x_percent: 0.0, // position of the mouse on x-axis
-      y_percent: 0.0, // position of the mouse on y-axis
+      gap_between_chars: 0.00083, // gap between characters for the curve
+      x_percent_target: 0.0, // position of the mouse on x-axis
+      y_percent_target: 0.0, // position of the mouse on y-axis
+      x_percent_lerped: 0.0,
+      y_percent_lerped: 0.0,
+      lerpSpeed: 0.1,
       hidingCoeff: 0.75, // hide the canvas if scrollTopPercent is pass this
     };
   },
@@ -149,6 +118,7 @@ export default {
     window.addEventListener("resize", this.onResize);
     window.addEventListener("scroll", this.onScroll);
     window.addEventListener("mousemove", this.onMouseMove);
+    window.addEventListener("touchmove", this.onTouchMove);
 
     for (var i = 0; i < 12; i++) {
       // randomly shuffle sentences
@@ -177,13 +147,15 @@ export default {
     },
 
     // generate a texture from a sentence
-    generateTextureFromSentence(sentence) {
+    generateTextureFromSentence(
+      sentence,
+      fontSize = 500,
+      padding = 100,
+      color = null,
+      fontFamily = "Asap",
+    ) {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
-
-      const fontSize = 500;
-      const fontFamily = "Asap";
-      const padding = 100; // Uniform padding for all sides
 
       // Set font before measuring text
       context.font = `${fontSize}px ${fontFamily}`;
@@ -199,11 +171,15 @@ export default {
       canvas.height = textHeight + padding * 2; // Increase the resolution for better quality
 
       // Optional: Fill background if needed
-      // context.fillStyle = "white";
-      // context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "rgba(0, 0, 0, 0)";
+      context.fillRect(0, 0, canvas.width, canvas.height);
 
       // Set text properties for drawing
-      context.fillStyle = this.textColors[this.colorChoice];
+      if (color == null) {
+        context.fillStyle = this.textColors[this.colorChoice];
+      } else {
+        context.fillStyle = color;
+      }
       context.textBaseline = "middle"; // Align text vertically in the middle
       context.textAlign = "center"; // Align text horizontally in the center
       context.font = `${fontSize}px ${fontFamily}`; // Scale the font size accordingly
@@ -228,20 +204,28 @@ export default {
       this.windowHeight = window.innerHeight;
       this.onScroll();
     },
+
+
     onScroll() {
       let oldScrollTopPercent = this.scrollTopPercent;
-      this.camera.position.z =
+      this.camera.position.z = Math.max(
         (1 - document.documentElement.scrollTop / (4 * this.windowHeight)) *
           (this.maxZ - this.minZ) +
-        this.minZ;
+          this.minZ,
+        1.25,
+      );
       this.scrollTopPercent =
         document.documentElement.scrollTop / (4 * this.windowHeight);
+      if (this.helloShaderMaterial) {
+        this.helloShaderMaterial.uniforms.scrollTopPercent.value =
+          this.scrollTopPercent;
+      }
       if (this.scrollTopPercent > this.hidingCoeff) {
         this.renderer.setClearColor("rgb(240, 179, 188)", 1);
-        this.stopAnimation = true;
+        // this.stopAnimation = true;
       } else {
         if (oldScrollTopPercent > this.hidingCoeff) {
-          this.stopAnimation = false;
+          // this.stopAnimation = false;
           this.renderer.setClearColor(
             this.backgroundColors[this.colorChoice],
             1,
@@ -250,36 +234,30 @@ export default {
       }
       // console.log(this.scrollTopPercent);
       this.camera.position.y =
-        (3.0 * document.documentElement.scrollTop) / (4 * this.windowHeight);
+        (4.0 * document.documentElement.scrollTop) / (4 * this.windowHeight);
     },
+
     onMouseMove(event) {
-      this.x_percent = event.clientX / window.innerWidth;
-      this.y_percent = event.clientY / window.innerHeight;
-      // map from -1 to 1
-      this.x_percent = this.x_percent * 2 - 1;
-      this.y_percent = this.y_percent * 2 - 1;
-      const rotation_around_x = this.y_percent * 2.7;
-      const rotation_around_y = this.x_percent * 2.7;
-
-      // compute rotation matrix
-      const rotation_matrix = new THREE.Matrix4();
-      rotation_matrix.makeRotationFromEuler(
-        new THREE.Euler(rotation_around_x, rotation_around_y, 0),
-      );
-      const rotatedPoints = points.map((point) =>
-        point.clone().applyMatrix4(rotation_matrix),
-      );
-
-      // Create a new curve with the rotated points
-      curve = new THREE.CatmullRomCurve3(rotatedPoints);
-      curve.closed = true;
+      this.x_percent_target = (event.clientX / window.innerWidth) * 2 - 1;
+      this.y_percent_target = -(event.clientY / window.innerHeight) * 2 + 1; // Note the negative as the screen's y-coordinate goes from top to bottom.
     },
+
+    onTouchMove(event) {
+      // Prevent the default scrolling on touch move
+      event.preventDefault();
+      const touch = event.touches[0];
+
+      // Normalize the touch coordinates from -1 to 1
+      this.x_percent_target = (touch.clientX / window.innerWidth) * 2 - 1;
+      this.y_percent_target = -(touch.clientY / window.innerHeight) * 2 + 1; // Negative because the screen's y-coordinate goes from top to bottom.
+    },
+
     initThree() {
       scene = new THREE.Scene();
 
       const aspectRatio =
         this.threejsContainer.clientWidth / this.threejsContainer.clientHeight;
-      this.camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.4, 1000);
+      this.camera = new THREE.PerspectiveCamera(55, aspectRatio, 1.0, 1000);
       this.camera.position.z = 20.0;
 
       this.renderer = new THREE.WebGLRenderer({
@@ -329,14 +307,7 @@ export default {
         me.coverImageTexture = new THREE.Texture();
         me.coverImageTexture.image = image;
         me.coverImageTexture.needsUpdate = true;
-        me.coverImageTexture.premultiplyAlpha = false;
-
-        const material = new THREE.MeshBasicMaterial({
-          map: me.coverImageTexture,
-          side: THREE.DoubleSide,
-          transparent: true,
-          alphaTest: 0.01,
-        });
+        me.coverImageTexture.premultiplyAlpha = true;
 
         me.moebiusShaderMaterial = new THREE.ShaderMaterial({
           uniforms: {
@@ -431,14 +402,38 @@ export default {
           geometry,
           me.sentenceShaderMaterial,
         );
-        sentenceMesh.position.z = -0.0001;
+        sentenceMesh.position.z = -0.0004;
         scene.add(sentenceMesh);
-      });
 
-      // add spherical text
-      for (let i = 0; i < curve_texts.length; i++) {
-        scene.add(curve_texts[i]);
-      }
+        // add another mesh for welcoming people
+        const geometry1 = new THREE.PlaneGeometry(width, height, 1, 1);
+        me.helloShaderMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            cutoutImage: { value: me.centerCutoutTexture },
+            coverImage: { value: me.coverImageTexture },
+            width: { value: image.width },
+            height: { value: image.height },
+            time: { value: 0.0 },
+            scrollTopPercent: { value: me.scrollTopPercent },
+            mouse_x_percent: {value: me.x_percent_lerped},
+            mouse_y_percent: {value: me.y_percent_lerped},
+            maxZ: {value: me.maxZ},
+            minZ: {value: me.minZ},
+            maxY: {value: 4.0},
+            maxHeightOrWidth: {value: me.maxHeightOrWidth},
+          },
+          vertexShader: me.helloShader.vertexShader,
+          fragmentShader: me.helloShader.fragmentShader,
+          transparent: true,
+        });
+
+        const helloMesh = new THREE.Mesh(geometry1, me.helloShaderMaterial);
+        helloMesh.position.z = -0.0001;
+        scene.add(helloMesh);
+      });
+    },
+    lerp(start, end, amt) {
+      return (1 - amt) * start + amt * end;
     },
     animate() {
       let me = this;
@@ -453,6 +448,17 @@ export default {
 
         me.choice = (me.choice + 1) % 2;
         me.ticks = (me.ticks + 1) % 90;
+        me.x_percent_lerped = me.lerp(
+          me.x_percent_lerped,
+          me.x_percent_target,
+          me.lerpSpeed,
+        );
+        me.y_percent_lerped = me.lerp(
+          me.y_percent_lerped,
+          me.y_percent_target,
+          me.lerpSpeed,
+        );
+
 
         // change hsb
         me.hsbChoice = (me.hsbChoice + 1) % 73;
@@ -468,104 +474,12 @@ export default {
         if (me.sentenceShaderMaterial) {
           me.sentenceShaderMaterial.uniforms.time.value += 0.01;
         }
-
-        // move curve text
-        // Update progress
-        me.curve_progress += me.curve_speed;
-        if (me.curve_progress > 1) {
-          me.curve_progress = 0; // Loop the animation
+        if (me.helloShaderMaterial) {
+          me.helloShaderMaterial.uniforms.time.value += 0.01;
+          me.helloShaderMaterial.uniforms.mouse_x_percent.value = me.x_percent_lerped;
+          me.helloShaderMaterial.uniforms.mouse_y_percent.value = me.y_percent_lerped;
+          console.log(me.y_percent_lerped);
         }
-        // const angle = me.ticks * Math.PI * 2 / 90; // 45 degrees
-        // const axis = new THREE.Vector3(0, 1, 0); // Y-axis
-        // const rotationMatrix = new THREE.Matrix4().makeRotationAxis(axis, angle);
-        // const rotatedPoints = points.map(point => point.clone().applyMatrix4(rotationMatrix));
-
-        // // Create a new curve with the rotated points
-        // curve = new THREE.CatmullRomCurve3(rotatedPoints);
-        // curve.closed = true;
-
-        for (let i = 0; i < curve_texts.length; i++) {
-          // Get the position along the curve
-          const P2 = curve.getPoint(
-            (me.curve_progress - me.gap_between_chars * i) % 1,
-          );
-          // Make the text face the next point on the curve
-          const P1 = curve.getPoint(
-            (me.curve_progress - 0.00015 - me.gap_between_chars * i) % 1,
-          );
-          const P3 = curve.getPoint(
-            (me.curve_progress + 0.00015 - me.gap_between_chars * i) % 1,
-          );
-          const P4 = curve.getPoint(
-            (me.curve_progress - 0.00015 * 2.0 - me.gap_between_chars * i) % 1,
-          );
-          const P5 = curve.getPoint(
-            (me.curve_progress + 0.00015 * 2.0 - me.gap_between_chars * i) % 1,
-          );
-          const normal = P2.clone().normalize();
-          // Calculate the vector from P2 to P1 and normalize it to get the x-axis
-          const xAxis = new THREE.Vector3().subVectors(P1, P2).normalize();
-          // Calculate the vector from P2 to P3
-          const vecP2P3 = new THREE.Vector3().subVectors(P3, P2);
-          // Calculate the z-axis (normal vector)
-          const zAxis = normal.clone();
-          // Calculate the y-axis as the cross product of zAxis and xAxis
-          const yAxis = new THREE.Vector3()
-            .crossVectors(zAxis, xAxis)
-            .normalize();
-          // Recalculate the x-axis to ensure orthogonality
-          xAxis.crossVectors(yAxis, zAxis).normalize();
-          // Create a matrix from the basis vectors
-          const matrix = new THREE.Matrix4().makeBasis(xAxis, yAxis, zAxis);
-
-          // Calculate vectors from P1 to P2 and from P1 to P3
-          const vector12 = new THREE.Vector3().subVectors(P2, P1);
-          const vector13 = new THREE.Vector3().subVectors(P3, P1);
-          const vector24 = new THREE.Vector3().subVectors(P4, P2);
-          const vector35 = new THREE.Vector3().subVectors(P5, P3);
-          // Calculate the cross product of these vectors
-          // smooth the area
-          const crossProduct123 = new THREE.Vector3().crossVectors(
-            vector12,
-            vector13,
-          );
-          const crossProduct241 = new THREE.Vector3().crossVectors(
-            vector24,
-            vector12,
-          );
-          const crossProduct315 = new THREE.Vector3().crossVectors(
-            vector35,
-            vector13,
-          );
-
-          var area =
-            -(
-              60000 *
-              (crossProduct123.length() +
-                crossProduct241.length() +
-                crossProduct315.length())
-            ) /
-              3.0 +
-            1.0;
-          area = Math.sqrt(Math.max(area, 0.16));
-          const scaling = 1 - me.scrollTopPercent;
-          let p2Copy = P2.clone();
-          p2Copy.x *= 1.2 * scaling;
-          p2Copy.y *= 1.2 * scaling;
-          p2Copy.y += 1 + me.scrollTopPercent * 1.66666; // y final is 2.25
-          p2Copy.z *= 1.2 * scaling;
-          p2Copy.z += 10.0 - me.scrollTopPercent * 12.633333; // camera ending positon is 1.25
-
-          // Set the rotation of the square based on the matrix
-          curve_texts[i].setRotationFromMatrix(matrix);
-          curve_texts[i].position.copy(p2Copy);
-          curve_texts[i].scale.set(
-            area * scaling * (P2.z * 0.25 + 0.75),
-            area * scaling * (P2.z * 0.25 + 0.75),
-            area * scaling * (P2.z * 0.25 + 0.75),
-          );
-        }
-        // console.log(me.camera.position.z, me.scrollTopPercent);
       }, 1000 / 120);
       if (!this.stopAnimation) {
         this.renderer.render(scene, this.camera);

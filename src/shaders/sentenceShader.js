@@ -30,6 +30,7 @@ class sentenceShader {
       uniform float width;
       uniform float height;
 
+
       float rand(vec2 co){
           return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
       }
@@ -46,7 +47,7 @@ class sentenceShader {
         float uCenter = (vUv.x - (1.0 / scaleUp) * sideScale) * scaleUp;
         float vCenter = (vUv.y - (1.0 / scaleUp) * sideScale) * scaleUp;
         if (texture2D(cutoutImage, vec2(uCenter, vCenter)).a > 0.0){
-          gl_FragColor = vec4(240.0 / 255.0, 179.0 / 255.0, 188.0 / 255.0, 1.0);
+          gl_FragColor = vec4(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0, 1.0);
           // gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
         }else{
           // direction of the text
@@ -96,10 +97,6 @@ class sentenceShader {
           if (yPercent * sentenceHeights[choice] < 25.0 || (1.0 - yPercent) * sentenceHeights[choice] < 25.0){
             gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
           }
-
-          // if (gl_FragColor.a < 0.6){
-          //   gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
-          // }
           return;
         }
       }

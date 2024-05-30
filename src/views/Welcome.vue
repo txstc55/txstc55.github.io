@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen flex items-center justify-center text-white text-center blank text-8xl">
+  <div class="w-screen h-screen flex items-center justify-center text-center blank text-8xl text-white">
     Hello
   </div>
 </template>
@@ -24,6 +24,6 @@ export default {
 
 <style scoped>
 .blank{
-  background-color: rgb(240, 179, 188);
+  background-color: black;
 }
 </style>
