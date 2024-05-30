@@ -97,7 +97,7 @@ class moebiusShader {
           return dot(color.xyz, luma) * color.z;
       }
       float getValue(float x, float y) {
-          return valueAtPoint(coverImage, vUv, vec2(0.01 / width, 0.01 / height), vec2(x, y));
+          return valueAtPoint(coverImage, vUv, vec2(0.01 / (width / height * 22.0), 0.01 / 22.0), vec2(x, y));
       }
 
       float combinedSobelValue() {
