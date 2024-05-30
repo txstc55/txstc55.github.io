@@ -17,7 +17,7 @@
      :class="{
         'opacity-0': scrollTopPercent > 0.1,
         'opacity-100': scrollTopPercent <= 0.1,
-     }" :style="{'font-family':'asap'}">Scroll for More<br>↓</div>
+     }" :style="{'font-family':'Asap'}">Scroll for More<br>↓</div>
     </div>
   </div>
 </template>
@@ -490,11 +490,6 @@ export default {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: "Asap";
-  src: url("@/assets/asap.ttf") format("truetype");
-}
-
 .blank {
   background-color: rgb(240, 179, 188);
 }

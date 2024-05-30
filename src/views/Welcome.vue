@@ -1,6 +1,6 @@
 <template>
-  <div class="w-screen h-screen flex items-center justify-center text-center blank text-8xl text-white">
-    Hello
+  <div class="w-screen h-screen flex items-center justify-center text-center blank text-8xl text-white" :style="{'font-family':'Asap'}">
+    You Found Me<br>I'm Xuan Tang
   </div>
 </template>
 
