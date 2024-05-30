@@ -181,9 +181,9 @@ class helloShader {
         if (texture2D(cutoutImage, vUvNew).a > 0.0 || texture2D(cutoutImage, vUvNew).a < 1.0 || vUvNew.y <= 0.0 || vUvNew.y >= 1.0 || vUvNew.x <= 0.0 || vUvNew.x >= 1.0){
           // add glitch effect for out of bound content
           if (texture2D(cutoutImage, vUvNew).a == 0.0){
-            if (mod(time, 1.5) < 0.3){
+            if (mod(time, 3.0) < 1.0){
               float originalX = vUvNew.x;
-              float modX = mod(originalX, 0.04 * (sin(floor(time * 7.0)) + 1.0) / 2.0);
+              float modX = mod(originalX, 0.04 * (sin(floor(time * 1.7)) + 1.0) / 2.0);
               if (modX < (0.04 / 2.0)){
                 vUvNew.x = originalX + (0.04) - modX;
               }else{
@@ -192,7 +192,7 @@ class helloShader {
 
 
               float originalY = vUvNew.y;
-              float modYFactor = 0.03 * (sin(floor(time * 13.0)) + 1.0) / 2.0;
+              float modYFactor = 0.03 * (sin(floor(time * 2.3)) + 1.0) / 2.0;
               float modY = mod(originalY, modYFactor);
               if (modY < (modYFactor / 2.0)){
                 vUvNew.y = originalY + (modYFactor / 2.0) - modY;
