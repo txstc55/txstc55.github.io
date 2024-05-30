@@ -72,7 +72,7 @@ class helloShader {
 
       void main(){
         // add transition to the boat and everything
-        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 28.0 + mouse_x_percent / 4.0;
+        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 32.0 + mouse_x_percent / 4.0;
         // floatFactor = 0.0;
         float x_middle = 0.5 + floatFactor * (1.0 - scrollTopPercent);
         float x_left = 0.49 + floatFactor * (1.0 - scrollTopPercent);
