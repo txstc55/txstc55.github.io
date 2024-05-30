@@ -99,7 +99,7 @@ export default {
       y_percent_target: 0.0, // position of the mouse on y-axis
       x_percent_lerped: 0.0,
       y_percent_lerped: 0.0,
-      lerpSpeed: 0.1,
+      lerpSpeed: 0.05,
       hidingCoeff: 0.75, // hide the canvas if scrollTopPercent is pass this
     };
   },
@@ -472,15 +472,15 @@ export default {
         }
         // move text background
         if (me.sentenceShaderMaterial) {
-          me.sentenceShaderMaterial.uniforms.time.value += 0.01;
+          me.sentenceShaderMaterial.uniforms.time.value += 0.02;
         }
         if (me.helloShaderMaterial) {
-          me.helloShaderMaterial.uniforms.time.value += 0.01;
+          me.helloShaderMaterial.uniforms.time.value += 0.02;
           me.helloShaderMaterial.uniforms.mouse_x_percent.value = me.x_percent_lerped;
           me.helloShaderMaterial.uniforms.mouse_y_percent.value = me.y_percent_lerped;
           console.log(me.y_percent_lerped);
         }
-      }, 1000 / 120);
+      }, 1000 / 60);
       if (!this.stopAnimation) {
         this.renderer.render(scene, this.camera);
       }
