@@ -72,7 +72,7 @@ class helloShader {
 
       void main(){
         // add transition to the boat and everything
-        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 32.0 + mouse_x_percent / 4.0;
+        float floatFactor = (sin(time / 2.0) + sin (time * 0.71) + sin(time * 3.0) + sin(time * 1.31) + sin(time * 0.13)) / 32.0 + mouse_x_percent / 5.0;
         // floatFactor = 0.0;
         float x_middle = 0.5 + floatFactor * (1.0 - scrollTopPercent);
         float x_left = 0.49 + floatFactor * (1.0 - scrollTopPercent);
@@ -206,7 +206,7 @@ class helloShader {
             displacementX[i] = 24.0 * (2.0 * rand(vec2(10.0, float(i) + floor(time * 1.7))) - 1.0) + mouse_x_percent * 80.0;
             displacementY[i] = 18.0 * (2.0 * rand(vec2(9.0 + floor(time * 13.0), float(i + 12))) - 1.0) + (mouse_y_percent - planePositionY) * 40.0 - 10.0;
           }
-          float radius = 140.0;
+          float radius = texture2D(cutoutImage, vUv).a > 0.0 ? 140.0 : 130.0;
           if (toCenterDistance < radius){
             gl_FragColor = vec4(255.0 / 255.0, 24.0 / 255.0, 78.0 / 255.0, 1.0);
 
