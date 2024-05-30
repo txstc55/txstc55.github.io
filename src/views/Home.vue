@@ -150,7 +150,7 @@ export default {
     generateTextureFromSentence(
       sentence,
       fontSize = 100,
-      padding = 10,
+      padding = 30,
       color = null,
       fontFamily = "Asap",
     ) {
@@ -473,7 +473,7 @@ export default {
         }
         // move text background
         if (me.sentenceShaderMaterial) {
-          me.sentenceShaderMaterial.uniforms.time.value += 0.02;
+          me.sentenceShaderMaterial.uniforms.time.value += 0.01;
         }
         if (me.helloShaderMaterial) {
           me.helloShaderMaterial.uniforms.time.value += 0.02;
