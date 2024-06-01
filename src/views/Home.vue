@@ -25,6 +25,7 @@
 <script>
 import * as THREE from "three";
 let scene = null;
+let sentenceMesh = null;
 // import cover image
 import coverImage3 from "@/assets/self.png";
 // import center cutout image
@@ -220,12 +221,12 @@ export default {
         this.helloShaderMaterial.uniforms.scrollTopPercent.value =
           this.scrollTopPercent;
       }
-      if (this.scrollTopPercent > this.hidingCoeff) {
+      if (this.scrollTopPercent > 1.0) {
         this.renderer.setClearColor("rgb(240, 179, 188)", 1);
-        // this.stopAnimation = true;
+        this.stopAnimation = true;
       } else {
-        if (oldScrollTopPercent > this.hidingCoeff) {
-          // this.stopAnimation = false;
+        if (oldScrollTopPercent > 1.0) {
+          this.stopAnimation = false;
           this.renderer.setClearColor(
             this.backgroundColors[this.colorChoice],
             1,
@@ -235,6 +236,9 @@ export default {
       // console.log(this.scrollTopPercent);
       this.camera.position.y =
         (4.0 * document.documentElement.scrollTop) / (4 * this.windowHeight);
+      if (sentenceMesh){
+        sentenceMesh.scale.set(1.0 - this.scrollTopPercent, 1.0 - this.scrollTopPercent, 1.0 - this.scrollTopPercent);
+      }
     },
 
     onMouseMove(event) {
@@ -398,7 +402,7 @@ export default {
           transparent: true,
         });
 
-        const sentenceMesh = new THREE.Mesh(
+        sentenceMesh = new THREE.Mesh(
           geometry,
           me.sentenceShaderMaterial,
         );
