@@ -80,7 +80,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -93,7 +93,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -106,7 +106,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -119,7 +119,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -132,7 +132,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -145,7 +145,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
@@ -158,7 +158,7 @@
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
           scrollTopPercent <= scrollBoundaryBottom,
-        '-bottom-24 fixed':
+        '-bottom-32 fixed':
           scrollTopPercent < scrollBoundaryTop ||
           scrollTopPercent > scrollBoundaryBottom,
       }"
