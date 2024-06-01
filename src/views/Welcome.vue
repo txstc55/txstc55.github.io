@@ -75,7 +75,7 @@
     </div>
 
     <div
-      class="animation-container h-28 w-full duration-500 -left-28"
+      class="animation-container h-28 w-full duration-2000 -left-28"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -88,7 +88,7 @@
       id="animationContainer0"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500 left-28"
+      class="animation-container h-28 w-full duration-2000 left-28"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -101,7 +101,7 @@
       id="animationContainer1"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500"
+      class="animation-container h-28 w-full duration-2000"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -114,7 +114,7 @@
       id="animationContainer2"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500 left-56"
+      class="animation-container h-28 w-full duration-2000 left-56"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -127,7 +127,7 @@
       id="animationContainer3"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500 -left-56"
+      class="animation-container h-28 w-full duration-2000 -left-56"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -140,7 +140,7 @@
       id="animationContainer4"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500 left-84"
+      class="animation-container h-28 w-full duration-2000 left-84"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&
@@ -153,7 +153,7 @@
       id="animationContainer5"
     ></div>
     <div
-      class="animation-container h-28 w-full duration-500 -left-84"
+      class="animation-container h-28 w-full duration-2000 -left-84"
       :class="{
         '-bottom-9 fixed':
           scrollTopPercent >= scrollBoundaryTop &&

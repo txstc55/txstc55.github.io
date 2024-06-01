@@ -24,6 +24,7 @@ export default {
 
 html {
   overscroll-behavior: none;
+  scroll-behavior: smooth;
 }
 
 body {

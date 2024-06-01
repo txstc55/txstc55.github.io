@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full scroll-smooth">
+  <div class="w-full h-full">
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
     <div class="w-full h-screen blank"></div>
