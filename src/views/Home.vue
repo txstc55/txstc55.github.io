@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full overflow-hidden">
     <div class="w-full h-screen welcome-bg"></div>
     <div class="w-full h-screen welcome-bg"></div>
     <div class="w-full h-screen welcome-bg"></div>

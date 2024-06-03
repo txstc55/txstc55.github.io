@@ -23,6 +23,7 @@ module.exports = {
         160: "40rem",
         180: "45rem",
         46: "11.5rem",
+        54: "13.5rem",
       },
       transitionDelay: {
         400: "400ms",

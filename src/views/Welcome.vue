@@ -96,7 +96,7 @@
       :key="index"
       class="animation-container h-160 w-full duration-2000 delay-700"
       :class="{
-        '-bottom-52 fixed': inView,
+        '-bottom-54 fixed': inView,
         '-bottom-120 fixed': !inView,
       }"
       :style="{
