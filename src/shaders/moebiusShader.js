@@ -17,6 +17,7 @@ class moebiusShader {
       uniform float u_hueAdjust;
       uniform float u_saturationAdjust;
       uniform float u_brightnessAdjust;
+      uniform float scrollTopPercent;
 
       // Converts an RGB color to HSB
       vec3 rgbToHsb(vec3 color) {
@@ -97,7 +98,7 @@ class moebiusShader {
           return dot(color.xyz, luma) * color.z;
       }
       float getValue(float x, float y) {
-          return valueAtPoint(coverImage, vUv, vec2(0.01 / (width / height * 22.0), 0.01 / 22.0), vec2(x, y));
+          return valueAtPoint(coverImage, vUv, vec2(0.01 / (width / height * 12.0), 0.01 / 12.0), vec2(x, y));
       }
 
       float combinedSobelValue() {
@@ -161,9 +162,10 @@ class moebiusShader {
             gl_FragColor = lineColor;
         }else{
           // // distort a bit
-          float xDisps[5] = float[](randDispl(vUv.x, vUv.y, width, height, 0.05 / width, vec4(22.0, 13.0, 37.0, 89.0)), randDispl(vUv.x, vUv.y, width, height, 0.05 / width, vec4(timerRandoms[0], timerRandoms[1], timerRandoms[2], timerRandoms[3])), randDispl(vUv.x, vUv.y, width, height, 0.05 / width, vec4(timerRandoms[4], timerRandoms[5], timerRandoms[6], timerRandoms[7])), randDispl(vUv.x, vUv.y, width, height, 0.05 / width, vec4(timerRandoms[8], timerRandoms[9], timerRandoms[10], timerRandoms[11])), randDispl(vUv.x, vUv.y, width, height, 0.05 / width, vec4(timerRandoms[12], timerRandoms[13], timerRandoms[14], timerRandoms[15])));
+          float displaySegmentLength = 0.002 * scrollTopPercent + 0.005;
+          float xDisps[5] = float[](randDispl(vUv.x, vUv.y, width, height, displaySegmentLength / width, vec4(22.0, 13.0, 37.0, 89.0)), randDispl(vUv.x, vUv.y, width, height, displaySegmentLength / width, vec4(timerRandoms[0], timerRandoms[1], timerRandoms[2], timerRandoms[3])), randDispl(vUv.x, vUv.y, width, height, displaySegmentLength / width, vec4(timerRandoms[4], timerRandoms[5], timerRandoms[6], timerRandoms[7])), randDispl(vUv.x, vUv.y, width, height, displaySegmentLength / width, vec4(timerRandoms[8], timerRandoms[9], timerRandoms[10], timerRandoms[11])), randDispl(vUv.x, vUv.y, width, height, displaySegmentLength / width, vec4(timerRandoms[12], timerRandoms[13], timerRandoms[14], timerRandoms[15])));
 
-          float yDisps[5] = float[](randDispl(vUv.y, vUv.x, height, width, 0.05 / height, vec4(22.0, 13.0, 37.0, 89.0)), randDispl(vUv.y, vUv.x, height, width, 0.05 / height, vec4(timerRandoms[16], timerRandoms[17], timerRandoms[18], timerRandoms[19])), randDispl(vUv.y, vUv.x, height, width, 0.05 / height, vec4(timerRandoms[20], timerRandoms[21], timerRandoms[22], timerRandoms[23])), randDispl(vUv.y, vUv.x, height, width, 0.05 / height, vec4(timerRandoms[24], timerRandoms[25], timerRandoms[26], timerRandoms[7])), randDispl(vUv.y, vUv.x, height, width, 0.05 / height, vec4(timerRandoms[28], timerRandoms[29], timerRandoms[30], timerRandoms[31])));
+          float yDisps[5] = float[](randDispl(vUv.y, vUv.x, height, width, displaySegmentLength / height, vec4(22.0, 13.0, 37.0, 89.0)), randDispl(vUv.y, vUv.x, height, width, displaySegmentLength / height, vec4(timerRandoms[16], timerRandoms[17], timerRandoms[18], timerRandoms[19])), randDispl(vUv.y, vUv.x, height, width, displaySegmentLength / height, vec4(timerRandoms[20], timerRandoms[21], timerRandoms[22], timerRandoms[23])), randDispl(vUv.y, vUv.x, height, width, displaySegmentLength / height, vec4(timerRandoms[24], timerRandoms[25], timerRandoms[26], timerRandoms[7])), randDispl(vUv.y, vUv.x, height, width, displaySegmentLength / height, vec4(timerRandoms[28], timerRandoms[29], timerRandoms[30], timerRandoms[31])));
 
 
           // Convert RGB to HSB

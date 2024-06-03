@@ -17,10 +17,15 @@ export default {
 </script>
 
 <style>
-/* @font-face {
+@font-face {
   font-family: "Asap";
   src: url("@/assets/asap.ttf") format("truetype");
-} */
+}
+
+@font-face {
+    font-family: "Monoton";
+    src: url("@/assets/Monoton-Regular.ttf") format("truetype");
+}
 
 html {
   overscroll-behavior: none;
@@ -29,5 +34,10 @@ html {
 
 body {
   overscroll-behavior: none;
+}
+
+/* color for welcome page */
+.welcome-bg{
+    background-color: #FFFDB5;
 }
 </style>

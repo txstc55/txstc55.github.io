@@ -166,13 +166,13 @@ class helloShader {
 
           // draw the sea
           if (vUvNew.y < sinWaveBoundary0){
-            gl_FragColor = mix(vec4(100.0 / 255.0, 185.0 / 255.0, 225.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
+            gl_FragColor = mix(vec4(100.0 / 255.0, 185.0 / 255.0, 225.0 / 255.0, 1.0), vec4(255.0 / 255.0, 253.0 /255.0, 181.0 / 255.0, 1.0), min(scrollTopPercent * 1.34, 1.0));
           }
           if (vUvNew.y < sinWaveBoundary1){
-            gl_FragColor = mix(vec4(30.0 / 255.0, 215.0 / 255.0, 195.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
+            gl_FragColor = mix(vec4(30.0 / 255.0, 215.0 / 255.0, 195.0 / 255.0, 1.0), vec4(255.0 / 255.0, 253.0 /255.0, 181.0 / 255.0, 1.0), min(scrollTopPercent * 1.34, 1.0));
           }
           if (vUvNew.y < sinWaveBoundary2){
-            gl_FragColor = mix(vec4(80.0 / 255.0, 235.0 / 255.0, 225.0 / 255.0, 1.0), vec4(0.0, 0.0, 0.0, 1.0), scrollTopPercent * 1.4);
+            gl_FragColor = mix(vec4(80.0 / 255.0, 235.0 / 255.0, 225.0 / 255.0, 1.0), vec4(255.0 / 255.0, 253.0 /255.0, 181.0 / 255.0, 1.0), min(scrollTopPercent * 1.34, 1.0));
           }
 
         }

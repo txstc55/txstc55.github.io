@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full">
-    <div class="w-full h-screen blank"></div>
-    <div class="w-full h-screen blank"></div>
-    <div class="w-full h-screen blank"></div>
-    <div class="w-full h-screen blank"></div>
+    <div class="w-full h-screen welcome-bg"></div>
+    <div class="w-full h-screen welcome-bg"></div>
+    <div class="w-full h-screen welcome-bg"></div>
+    <div class="w-full h-screen welcome-bg"></div>
     <div
       ref="threejsContainer"
       id="threejsContainer"
@@ -13,11 +13,16 @@
         '-translate-y-full absolute': scrollTopPercent > this.hidingCoeff,
       }"
     >
-      <div class="absolute bottom-0 text-white text-center w-full animate-bounce animate duration-500 ease-in-out select-none"
-     :class="{
-        'opacity-0': scrollTopPercent > 0.1,
-        'opacity-100': scrollTopPercent <= 0.1,
-     }" :style="{'font-family':'Asap'}">Scroll for More<br>↓</div>
+      <div
+        class="absolute bottom-0 text-white text-center w-full animate-bounce animate duration-500 ease-in-out select-none"
+        :class="{
+          'opacity-0': scrollTopPercent > 0.1,
+          'opacity-100': scrollTopPercent <= 0.1,
+        }"
+        :style="{ 'font-family': 'Asap' }"
+      >
+        Scroll for More<br />↓
+      </div>
     </div>
   </div>
 </template>
@@ -206,7 +211,6 @@ export default {
       this.onScroll();
     },
 
-
     onScroll() {
       let oldScrollTopPercent = this.scrollTopPercent;
       this.camera.position.z = Math.max(
@@ -219,6 +223,10 @@ export default {
         document.documentElement.scrollTop / (4 * this.windowHeight);
       if (this.helloShaderMaterial) {
         this.helloShaderMaterial.uniforms.scrollTopPercent.value =
+          this.scrollTopPercent;
+      }
+      if (this.moebiusShaderMaterial) {
+        this.moebiusShaderMaterial.uniforms.scrollTopPercent.value =
           this.scrollTopPercent;
       }
       if (this.scrollTopPercent > 1.0) {
@@ -236,8 +244,12 @@ export default {
       // console.log(this.scrollTopPercent);
       this.camera.position.y =
         (4.0 * document.documentElement.scrollTop) / (4 * this.windowHeight);
-      if (sentenceMesh){
-        sentenceMesh.scale.set(1.0 - this.scrollTopPercent, 1.0 - this.scrollTopPercent, 1.0 - this.scrollTopPercent);
+      if (sentenceMesh) {
+        sentenceMesh.scale.set(
+          1.0 - this.scrollTopPercent,
+          1.0 - this.scrollTopPercent,
+          1.0 - this.scrollTopPercent,
+        );
       }
     },
 
@@ -322,6 +334,7 @@ export default {
             u_hueAdjust: { value: me.randomWithinRange(-0.04, 0.04) },
             u_saturationAdjust: { value: me.randomWithinRange(-0.25, 0.75) },
             u_brightnessAdjust: { value: me.randomWithinRange(-0.03, 0.4) },
+            scrollTopPercent: { value: me.scrollTopPercent },
           },
           vertexShader: me.moebiusShader.vertexShader,
           fragmentShader: me.moebiusShader.fragmentShader,
@@ -402,15 +415,17 @@ export default {
           transparent: true,
         });
 
-        sentenceMesh = new THREE.Mesh(
-          geometry,
-          me.sentenceShaderMaterial,
-        );
+        sentenceMesh = new THREE.Mesh(geometry, me.sentenceShaderMaterial);
         sentenceMesh.position.z = -0.0004;
         scene.add(sentenceMesh);
 
         // add another mesh for welcoming people
-        const geometry1 = new THREE.PlaneGeometry(width * 3.0, height * 3.0, 1, 1);
+        const geometry1 = new THREE.PlaneGeometry(
+          width * 3.0,
+          height * 3.0,
+          1,
+          1,
+        );
         me.helloShaderMaterial = new THREE.ShaderMaterial({
           uniforms: {
             cutoutImage: { value: me.centerCutoutTexture },
@@ -419,13 +434,13 @@ export default {
             height: { value: image.height },
             time: { value: 0.0 },
             scrollTopPercent: { value: me.scrollTopPercent },
-            mouse_x_percent: {value: me.x_percent_lerped},
-            mouse_y_percent: {value: me.y_percent_lerped},
-            maxZ: {value: me.maxZ},
-            minZ: {value: me.minZ},
-            maxY: {value: 4.0},
-            maxHeightOrWidth: {value: me.maxHeightOrWidth},
-            scaleUp: {value: 3.0},
+            mouse_x_percent: { value: me.x_percent_lerped },
+            mouse_y_percent: { value: me.y_percent_lerped },
+            maxZ: { value: me.maxZ },
+            minZ: { value: me.minZ },
+            maxY: { value: 4.0 },
+            maxHeightOrWidth: { value: me.maxHeightOrWidth },
+            scaleUp: { value: 3.0 },
           },
           vertexShader: me.helloShader.vertexShader,
           fragmentShader: me.helloShader.fragmentShader,
@@ -464,7 +479,6 @@ export default {
           me.lerpSpeed,
         );
 
-
         // change hsb
         me.hsbChoice = (me.hsbChoice + 1) % 73;
         if (me.hsbChoice == 0) {
@@ -481,8 +495,10 @@ export default {
         }
         if (me.helloShaderMaterial) {
           me.helloShaderMaterial.uniforms.time.value += 0.02;
-          me.helloShaderMaterial.uniforms.mouse_x_percent.value = me.x_percent_lerped;
-          me.helloShaderMaterial.uniforms.mouse_y_percent.value = me.y_percent_lerped;
+          me.helloShaderMaterial.uniforms.mouse_x_percent.value =
+            me.x_percent_lerped;
+          me.helloShaderMaterial.uniforms.mouse_y_percent.value =
+            me.y_percent_lerped;
           // console.log(me.y_percent_lerped);
         }
       }, 1000 / 60);
@@ -494,9 +510,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.blank {
-  /* background-color: rgb(240, 179, 188); */
-  background-color: black;
-}
-</style>
+<style scoped></style>
