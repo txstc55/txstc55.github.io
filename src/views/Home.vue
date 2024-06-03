@@ -138,6 +138,12 @@ export default {
       );
     }
   },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("mousemove", this.onMouseMove);
+    window.removeEventListener("touchmove", this.onTouchMove);
+  },
   methods: {
     // random value within a range
     randomWithinRange(min, max) {
@@ -230,7 +236,7 @@ export default {
           this.scrollTopPercent;
       }
       if (this.scrollTopPercent > 1.0) {
-        this.renderer.setClearColor("rgb(240, 179, 188)", 1);
+        this.renderer.setClearColor("rgb(255, 253, 181)", 1);
         this.stopAnimation = true;
       } else {
         if (oldScrollTopPercent > 1.0) {

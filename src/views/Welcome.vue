@@ -148,7 +148,7 @@ export default {
   data() {
     return {
       animation: null,
-      scrollTopPercent: 0,
+      scrollTopPercentAtWelcome: 0,
       scrollBoundaryTop: 3.15,
       scrollBoundaryBottom: 4.25,
       inView: false,
@@ -192,12 +192,12 @@ export default {
   },
   computed: {},
   methods: {
-    onScroll() {
-      this.scrollTopPercent =
+    onScrollWelcome() {
+      this.scrollTopPercentAtWelcome =
         window.scrollY / window.innerHeight;
       this.inView =
-        this.scrollTopPercent >= this.scrollBoundaryTop &&
-        this.scrollTopPercent <= this.scrollBoundaryBottom;
+        this.scrollTopPercentAtWelcome >= this.scrollBoundaryTop &&
+        this.scrollTopPercentAtWelcome <= this.scrollBoundaryBottom;
       // console.log(window.scrollY / window.innerHeight);
     },
     async loadAnimation() {
@@ -239,13 +239,17 @@ export default {
     },
   },
   async mounted() {
-    this.scrollTopPercent =
+    this.scrollTopPercentAtWelcome =
       window.scrollY / window.innerHeight;
     this.inView =
-      this.scrollTopPercent >= this.scrollBoundaryTop &&
-      this.scrollTopPercent <= this.scrollBoundaryBottom;
+      this.scrollTopPercentAtWelcome >= this.scrollBoundaryTop &&
+      this.scrollTopPercentAtWelcome <= this.scrollBoundaryBottom;
     await this.loadAnimation();
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener("scroll", this.onScrollWelcome);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScrollWelcome);
   },
 };
 </script>
