@@ -150,7 +150,7 @@ export default {
     return {
       animation: null,
       scrollTopPercent: 0,
-      scrollBoundaryTop: 3.25,
+      scrollBoundaryTop: 3.15,
       scrollBoundaryBottom: 4.25,
       colorLists: [
         "#3AA6B9",
@@ -219,7 +219,7 @@ export default {
               clapping,
             ),
           });
-        }, 10);
+        }, 1000 * Math.random());
       }
     },
     generateColorListBasedOnIndex() {

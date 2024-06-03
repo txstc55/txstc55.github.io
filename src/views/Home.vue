@@ -331,7 +331,7 @@ export default {
             width: { value: me.imageWidth },
             height: { value: me.imageHeight },
             timerRandoms: { value: me.timerRandoms },
-            u_hueAdjust: { value: me.randomWithinRange(-0.04, 0.04) },
+            u_hueAdjust: { value: me.randomWithinRange(-0.05, 0.05) },
             u_saturationAdjust: { value: me.randomWithinRange(-0.25, 0.75) },
             u_brightnessAdjust: { value: me.randomWithinRange(-0.03, 0.4) },
             scrollTopPercent: { value: me.scrollTopPercent },
