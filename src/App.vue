@@ -25,11 +25,6 @@ export default {
   src: url("@/assets/asap.ttf") format("truetype");
 }
 
-@font-face {
-    font-family: "Monoton";
-    src: url("@/assets/Monoton-Regular.ttf") format("truetype");
-}
-
 html {
   overscroll-behavior: none;
   scroll-behavior: smooth;
