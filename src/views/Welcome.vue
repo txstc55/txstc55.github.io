@@ -194,11 +194,11 @@ export default {
   methods: {
     onScroll() {
       this.scrollTopPercent =
-        document.documentElement.scrollTop / window.innerHeight;
+        window.scrollY / window.innerHeight;
       this.inView =
         this.scrollTopPercent >= this.scrollBoundaryTop &&
         this.scrollTopPercent <= this.scrollBoundaryBottom;
-      // console.log(document.documentElement.scrollTop / window.innerHeight);
+      // console.log(window.scrollY / window.innerHeight);
     },
     async loadAnimation() {
       console.log("loading animation");
@@ -240,7 +240,7 @@ export default {
   },
   async mounted() {
     this.scrollTopPercent =
-      document.documentElement.scrollTop / window.innerHeight;
+      window.scrollY / window.innerHeight;
     this.inView =
       this.scrollTopPercent >= this.scrollBoundaryTop &&
       this.scrollTopPercent <= this.scrollBoundaryBottom;
