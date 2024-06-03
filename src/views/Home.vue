@@ -7,7 +7,7 @@
     <div
       ref="threejsContainer"
       id="threejsContainer"
-      class="w-full h-full overscroll-none"
+      class="w-full h-screen overscroll-none"
       :class="{
         'fixed translate-y-0 top-0': scrollTopPercent <= this.hidingCoeff,
         '-translate-y-full absolute': scrollTopPercent > this.hidingCoeff,
