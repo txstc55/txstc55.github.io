@@ -94,10 +94,10 @@
     <div
       v-for="index in 3"
       :key="index"
-      class="animation-container h-160 w-full duration-2000 delay-700"
+      class="animation-container h-160 w-full duration-300 delay-500"
       :class="{
-        '-bottom-54 fixed': inView,
-        '-bottom-120 fixed': !inView,
+        '-bottom-54 fixed': this.inView,
+        '-bottom-120 fixed': !this.inView,
       }"
       :style="{
         transform: `translateX(${42 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
@@ -108,10 +108,10 @@
     <div
       v-for="index in 7"
       :key="index"
-      class="animation-container h-64 w-full duration-2000 delay-300"
+      class="animation-container h-64 w-full duration-300 delay-200"
       :class="{
-        '-bottom-20 fixed': inView,
-        '-bottom-46 fixed': !inView,
+        '-bottom-20 fixed': this.inView,
+        '-bottom-46 fixed': !this.inView,
       }"
       :style="{
         transform: `translateX(${17 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
@@ -123,10 +123,10 @@
     <div
       v-for="index in 13"
       :key="index"
-      class="animation-container h-28 w-full duration-2000"
+      class="animation-container h-28 w-full duration-300"
       :class="{
-        '-bottom-9 fixed': inView,
-        '-bottom-32 fixed': !inView,
+        '-bottom-9 fixed': this.inView,
+        '-bottom-32 fixed': !this.inView,
       }"
       :style="{
         transform: `translateX(${8.5 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
@@ -140,9 +140,8 @@
 <script>
 import lottie from "lottie-web";
 import clapping from "@/assets/clapping.json";
-import { getColors } from "lottie-colorify";
+
 import { colorify } from "lottie-colorify";
-console.log(getColors(clapping));
 
 export default {
   name: "Welcome",
@@ -152,6 +151,7 @@ export default {
       scrollTopPercent: 0,
       scrollBoundaryTop: 3.15,
       scrollBoundaryBottom: 4.25,
+      inView: false,
       colorLists: [
         "#3AA6B9",
         "#FF7D29",
@@ -190,18 +190,14 @@ export default {
       ], // for this specific animation, there are 5 colors and here we indicate the order of the colors
     };
   },
-  computed: {
-    inView() {
-      return (
-        this.scrollTopPercent >= this.scrollBoundaryTop &&
-        this.scrollTopPercent <= this.scrollBoundaryBottom
-      );
-    },
-  },
+  computed: {},
   methods: {
     onScroll() {
       this.scrollTopPercent =
         document.documentElement.scrollTop / window.innerHeight;
+      this.inView =
+        this.scrollTopPercent >= this.scrollBoundaryTop &&
+        this.scrollTopPercent <= this.scrollBoundaryBottom;
       // console.log(document.documentElement.scrollTop / window.innerHeight);
     },
     async loadAnimation() {
@@ -244,7 +240,10 @@ export default {
   },
   async mounted() {
     this.scrollTopPercent =
-      document.documentElement.scrollTop / (4 * this.windowHeight);
+      document.documentElement.scrollTop / window.innerHeight;
+    this.inView =
+      this.scrollTopPercent >= this.scrollBoundaryTop &&
+      this.scrollTopPercent <= this.scrollBoundaryBottom;
     await this.loadAnimation();
     window.addEventListener("scroll", this.onScroll);
   },

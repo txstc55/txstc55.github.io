@@ -2,16 +2,19 @@
   <div id="app">
     <Home></Home>
     <Welcome></Welcome>
+    <About/>
   </div>
 </template>
 
 <script>
 import Home from './views/Home.vue'
 import Welcome from './views/Welcome.vue'
+import About from './views/About.vue'
 export default {
   components: {
     Home,
-    Welcome
+    Welcome,
+    About
   }
 }
 </script>
