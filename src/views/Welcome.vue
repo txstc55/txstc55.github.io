@@ -94,7 +94,7 @@
     <div
       v-for="index in 3"
       :key="index"
-      class="animation-container h-160 w-full duration-300 delay-500"
+      class="animation-container h-160 w-full duration-700 delay-500"
       :class="{
         '-bottom-54 fixed': this.inView,
         '-bottom-120 fixed': !this.inView,
@@ -108,7 +108,7 @@
     <div
       v-for="index in 7"
       :key="index"
-      class="animation-container h-64 w-full duration-300 delay-200"
+      class="animation-container h-64 w-full duration-500 delay-200"
       :class="{
         '-bottom-20 fixed': this.inView,
         '-bottom-46 fixed': !this.inView,
