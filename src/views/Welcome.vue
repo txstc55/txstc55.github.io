@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-screen flex items-center justify-center text-center text-7xl select-none relative stroke-2 overflow-hidden ease-in-out leading-relaxed welcome-bg"
+    class="w-full h-screen flex items-center justify-center text-center text-7xl select-none relative overflow-hidden ease-in-out leading-relaxed welcome-bg"
     :style="{ 'font-family': 'Monoton' }"
   >
     <svg
@@ -94,11 +94,7 @@
     <div
       v-for="index in 3"
       :key="index"
-      class="animation-container h-160 w-full duration-700 delay-500"
-      :class="{
-        '-bottom-54 fixed': this.inView,
-        '-bottom-120 fixed': !this.inView,
-      }"
+      class="animation-container h-180 w-full duration-700 delay-500 -bottom-56 absolute"
       :style="{
         transform: `translateX(${42 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
       }"
@@ -108,11 +104,7 @@
     <div
       v-for="index in 7"
       :key="index"
-      class="animation-container h-64 w-full duration-500 delay-200"
-      :class="{
-        '-bottom-20 fixed': this.inView,
-        '-bottom-46 fixed': !this.inView,
-      }"
+      class="animation-container h-64 w-full duration-500 delay-200 -bottom-20 absolute"
       :style="{
         transform: `translateX(${17 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
       }"
@@ -123,11 +115,7 @@
     <div
       v-for="index in 13"
       :key="index"
-      class="animation-container h-28 w-full duration-300"
-      :class="{
-        '-bottom-9 fixed': this.inView,
-        '-bottom-32 fixed': !this.inView,
-      }"
+      class="animation-container h-28 w-full duration-300 -bottom-9 absolute"
       :style="{
         transform: `translateX(${8.5 * Math.floor(index / 2) * (index % 2 == 0 ? 1 : -1)}rem)`,
       }"
@@ -151,7 +139,6 @@ export default {
       scrollTopPercentAtWelcome: 0,
       scrollBoundaryTop: 3.15,
       scrollBoundaryBottom: 4.25,
-      inView: false,
       colorLists: [
         "#3AA6B9",
         "#FF7D29",
@@ -195,10 +182,6 @@ export default {
     onScrollWelcome() {
       this.scrollTopPercentAtWelcome =
         window.scrollY / window.innerHeight;
-      this.inView =
-        this.scrollTopPercentAtWelcome >= this.scrollBoundaryTop &&
-        this.scrollTopPercentAtWelcome <= this.scrollBoundaryBottom;
-      // console.log(window.scrollY / window.innerHeight);
     },
     async loadAnimation() {
       console.log("loading animation");
@@ -241,9 +224,6 @@ export default {
   async mounted() {
     this.scrollTopPercentAtWelcome =
       window.scrollY / window.innerHeight;
-    this.inView =
-      this.scrollTopPercentAtWelcome >= this.scrollBoundaryTop &&
-      this.scrollTopPercentAtWelcome <= this.scrollBoundaryBottom;
     await this.loadAnimation();
     window.addEventListener("scroll", this.onScrollWelcome);
   },
@@ -256,7 +236,7 @@ export default {
 
 <style>
 .welcome-text path {
-  fill: #0d394e;
+  fill: #0d293e;
   stroke: #fffdb5;
   stroke-dasharray: 50;
   animation: draw-stroke 5s infinite;
@@ -268,7 +248,7 @@ export default {
     stroke-width: 1px;
   }
   50% {
-    stroke-dashoffset: 200;
+    stroke-dashoffset: 50;
     stroke-width: 0px;
   }
   100% {
