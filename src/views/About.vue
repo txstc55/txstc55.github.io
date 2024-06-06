@@ -92,10 +92,7 @@
       @click="showInfo = true"
     ></canvas>
     <div :class="divClass" @mouseleave="unsetTime()">
-      <div
-        id="introduction"
-        class="mt-2 p-2 text-2xl select-none"
-      >
+      <div id="introduction" class="mt-2 p-2 text-2xl select-none">
         Hi, I am Xuan Tang(唐煊).
       </div>
       <div
@@ -493,14 +490,18 @@ export default {
     },
     // scroll back to last page
     scrollBack() {
-      document.documentElement.scrollTop = this.$refs.introductionContainer.offsetTop;
+      document.documentElement.scrollTop =
+        this.$refs.introductionContainer.offsetTop;
     },
     // scroll to next page
     scrollNext() {
-      document.documentElement.scrollTop = this.$refs.detailedIntroductionContainer.offsetTop + getViewportHeight();
+      document.documentElement.scrollTop =
+        this.$refs.detailedIntroductionContainer.offsetTop +
+        getViewportHeight();
     },
     scrollToAbout() {
-      document.documentElement.scrollTop = this.$refs.detailedIntroductionContainer.offsetTop;
+      document.documentElement.scrollTop =
+        this.$refs.detailedIntroductionContainer.offsetTop;
     },
 
     // the type write effect for adding the text
