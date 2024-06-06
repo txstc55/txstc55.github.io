@@ -94,10 +94,9 @@
     <div :class="divClass" @mouseleave="unsetTime()">
       <div
         id="introduction"
-        class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
-        @mouseover="setUpTime(timePeriods.life)"
+        class="mt-2 p-2 text-2xl select-none"
       >
-        Hi, I am Xuan Tang
+        Hi, I am Xuan Tang(唐煊).
       </div>
       <div
         id="sub-intro"
@@ -392,7 +391,7 @@ export default {
             month: 10,
           },
         },
-        "University of Rochester": {
+        "Dean's Scholarship": {
           begin: {
             year: 2014,
             month: 9,
@@ -478,9 +477,9 @@ export default {
             "In a class taught by Professor Denis Shasha at NYU where students participates in weekly competition, my team was the first place in 7 out of 9 games and was rewarded with kitkat each time. We are still the record holder I believe.",
         },
         {
-          title: "University of Rochester",
+          title: "Dean's Scholarship",
           description:
-            "Dean's Scholarship. You maintain a good GPA, as simple as that.",
+            "Dean's Scholarship at University of Rochester. You maintain a good GPA, as simple as that.",
         },
       ],
     };
