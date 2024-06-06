@@ -485,14 +485,14 @@ export default {
   methods: {
     // scroll back to last page
     scrollBack() {
-      document.documentElement.scrollTop -= window.innerHeight;
+      document.documentElement.scrollTop = 5 * window.innerHeight;
     },
     // scroll to next page
     scrollNext() {
-      document.documentElement.scrollTop += window.innerHeight;
+      document.documentElement.scrollTop = 7 * window.innerHeight;
     },
     scrollToAbout(){
-      document.documentElement.scrollTop = 7 * window.innerHeight;
+      document.documentElement.scrollTop = 6 * window.innerHeight;
     },
 
     // the type write effect for adding the text
