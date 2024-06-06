@@ -8,6 +8,7 @@
   >
     <div
       class="text-6xl text-left relative shadow-sm px-10 py-20 rounded-lg hover:shadow-lg ease-in-out duration-500 hover:scale-105"
+      @click="scrollToAbout"
     >
       Let me introduce myself
       <div class="inline-block relative">
@@ -27,20 +28,67 @@
     }"
   >
     <div
+      id="sphereInfo"
+      class="duration-300 ease-in-out"
+      :class="{
+        'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl':
+          showInfo,
+        'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl opacity-0 -z-10':
+          !showInfo,
+      }"
+    >
+      <div class="w-full mt-1 text-lg text-center capitalize">
+        What is this thing
+      </div>
+      <div class="w-full mt-2 text-md text-left mx-2">
+        This is my timeline. I believe in reincarnation, so my timeline is in a
+        loop.
+      </div>
+      <div class="w-full mt-1 text-md text-left mx-2">
+        There are 1200 segments on this loop, each representing one month, and
+        maybe I'm lucky enough to live through all of them.
+      </div>
+      <div class="w-full mt-1 text-md text-left mx-2">
+        There are three color segments,
+        <span :style="{ color: '#fe5e3f' }">─</span> means it's currently being
+        focused, <span :style="{ color: '#028391' }">─</span> means the past,
+        and <span :style="{ color: '#ccf7ff' }">─</span> means the future.
+      </div>
+      <div class="w-full mt-1 text-md text-left mx-2">
+        This loop is generated through my research.
+      </div>
+      <div class="w-full mt-4 flex justify-center mb-2">
+        <button
+          class="px-2 py-1 border border-black text-sm rounded-md scale-95 hover:scale-100 ease-in-out duration-300 hover:shadow-lg"
+          @click="showInfo = false"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+    <div
       class="absolute top-1 text-black text-center left-1/2 transform -translate-x-1/2"
     >
       <button
-        class="select-none text-md border-2 border-black rounded-full scale-75 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center"
+        class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
         @click="scrollBack"
       >
         ↑
       </button>
     </div>
-    <canvas ref="sphereSceneCanvas" :class="canvasClass">
-      <div class="absolute bottom-0 w-full text-center text-white bg-black">
-        Maybe we will incarnate
-      </div></canvas
-    >
+    <!-- <div class="absolute bottom-1 text-black text-center left-1 transform">
+      <button
+        class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60"
+        @click="showInfo = true"
+      >
+        i
+      </button>
+    </div> -->
+    <canvas
+      ref="sphereSceneCanvas"
+      :class="canvasClass"
+      @click="showInfo = true"
+    ></canvas>
     <div :class="divClass" @mouseleave="unsetTime()">
       <div
         id="introduction"
@@ -137,7 +185,7 @@
       class="absolute bottom-1 text-black text-center left-1/2 transform -translate-x-1/2"
     >
       <button
-        class="select-none text-md border-2 border-black rounded-full scale-75 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center"
+        class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
         @click="scrollNext"
       >
         ↓
@@ -200,6 +248,7 @@ export default {
       gap_between_chars: 0.0008334,
 
       time_focus_segment: 0, // which segment to focus on
+      showInfo: false,
       timePeriods: {
         life: {
           begin: {
@@ -444,6 +493,9 @@ export default {
     scrollNext() {
       document.documentElement.scrollTop += window.innerHeight;
     },
+    scrollToAbout(){
+      document.documentElement.scrollTop = 7 * window.innerHeight;
+    },
 
     // the type write effect for adding the text
     setProfessionalText() {
@@ -512,12 +564,20 @@ export default {
         focusMonth,
       );
       let color = new THREE.Color(0x000000);
+      let latestLifeSegment = this.monthsBetween(
+        1995,
+        7,
+        this.timePeriods.life.latest.year,
+        this.timePeriods.life.latest.month,
+      );
       if (allSegments) {
         for (let i = 0; i < this.segmentCount; i++) {
           if (i >= beginSegment && i <= endSegment) {
-            allSegments.setColorAt(i, color.set(0xfeae6f));
+            allSegments.setColorAt(i, color.set(0xfe5e3f));
+          } else if (i <= latestLifeSegment) {
+            allSegments.setColorAt(i, color.set(0x028391));
           } else {
-            allSegments.setColorAt(i, color.set(0xace2e1));
+            allSegments.setColorAt(i, color.set(0xccf7ff));
           }
         }
       }
@@ -610,7 +670,7 @@ export default {
       const height = window.innerHeight;
       if (width >= height) {
         this.containerClass = "w-full h-screen flex relative";
-        this.canvasClass = "bg-white h-screen flex-1 w-1/2 h-screen";
+        this.canvasClass = "bg-white h-screen flex-1 w-1/2 h-screen ";
         this.divClass =
           "h-screen bg-white flex-1 w-1/2 h-screen px-5 pt-10 overflow-y-scroll pb-4";
       } else {
@@ -641,10 +701,13 @@ export default {
 
       // Calculate the total months from the given date to the current date
       const givenTotalMonths = year * 12 + (month - 1);
-      const currentTotalMonths = currentDate.getFullYear() * 12 + currentDate.getMonth();
+      const currentTotalMonths =
+        currentDate.getFullYear() * 12 + currentDate.getMonth();
 
       // Find the midpoint in total months
-      const middleTotalMonths = Math.floor((givenTotalMonths + currentTotalMonths) / 2);
+      const middleTotalMonths = Math.floor(
+        (givenTotalMonths + currentTotalMonths) / 2,
+      );
 
       // Convert the middle total months back to year and month
       const middleYear = Math.floor(middleTotalMonths / 12);
@@ -714,14 +777,14 @@ export default {
             const cameraPosition = camera.position.clone().normalize();
             const p2Normalized = P2.clone().normalize();
             const lerpedPosition = cameraPosition
-              .lerp(p2Normalized, 0.01)
+              .lerp(p2Normalized, 0.005)
               .normalize();
             camera.position.set(
               lerpedPosition.x * cameraDistance,
               lerpedPosition.y * cameraDistance,
               lerpedPosition.z * cameraDistance,
             );
-            camera.up.lerp(yAxis.multiplyScalar(-1), 0.01);
+            camera.up.lerp(yAxis.multiplyScalar(-1), 0.0075);
             camera.lookAt(new THREE.Vector3());
           }
         }
@@ -733,33 +796,33 @@ export default {
     },
   },
   mounted() {
-    this.setProfessionalText();
-    this.sphereSceneCanvas = this.$refs.sphereSceneCanvas;
-    this.onResize(); // this will set the style
-    this.$nextTick(() => {
-      this.initThree();
-      this.animate();
-      this.setUpColor(
-        1995,
-        7,
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getFullYear(),
-        date.getMonth() + 1,
-      );
-    });
-
-    window.addEventListener("resize", this.onResize);
+    // set the date to middle
     const date = new Date();
-
     const life_middle = this.getMiddleDate(1995, 7);
     const phd_middle = this.getMiddleDate(2022, 9);
-    console.log(life_middle, phd_middle);
     this.timePeriods.life.focus.year = life_middle.year;
     this.timePeriods.life.focus.month = life_middle.month;
     this.timePeriods.phd.focus.year = phd_middle.year;
     this.timePeriods.phd.focus.month = phd_middle.month;
 
+    // start showing the texts
+    this.setProfessionalText();
+
+    // set the canvas
+    this.sphereSceneCanvas = this.$refs.sphereSceneCanvas;
+
+    // set the style
+    this.onResize(); // this will set the style
+
+    // now we start the rendering stuffs
+    let me = this;
+    this.$nextTick(() => {
+      this.initThree();
+      this.animate();
+      this.setUpTime(this.timePeriods.life);
+    });
+
+    window.addEventListener("resize", this.onResize);
   },
   beforeDestroy() {
     // Clear interval when the component is destroyed to prevent memory leaks
