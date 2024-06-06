@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-screen flex items-center justify-center select-none relative overflow-hidden capitalize durtation-500"
+    class="w-full h-screen flex items-center justify-center select-none relative overflow-hidden capitalize"
     :style="{
       'font-family': 'Asap',
       background: 'linear-gradient(to bottom, #FFFDB5, #FFFFFF)',
@@ -102,14 +102,13 @@
         class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
         @mouseover="setUpTime(timePeriods.phd)"
       >
-        I am current a Ph.D. student at UCSD working with Professor
+        I am currently a Ph.D. student at UCSD working with Professor
         <a
           href="https://cseweb.ucsd.edu/~tzli/"
           target="_blank"
           class="underline"
           >Tzumao Li</a
-        >. My research focuses on making tools that make writing efficient
-        simulation code easier.
+        >. My research focuses on creating tools that facilitate writing efficient simulation code.
       </div>
       <div
         id="sub-intro"
@@ -124,15 +123,14 @@
         class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
         @mouseover="setUpTime(timePeriods.master)"
       >
-        I obtained my master's degree in computer science from NYU.
+        I obtained my master's degree in Computer Science from NYU.
       </div>
       <div
         id="sub-intro"
         class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
         @mouseover="setUpTime(timePeriods.bachelor)"
       >
-        And before that, my bachelor's degree in data science from University of
-        Rocheter.
+        And before that, my bachelor's degree in Data Science from the University of Rochester.
       </div>
       <div id="paper-intro" class="mt-16 p-2 text-xl select-none">
         I also have some papers, surprise surprise.
@@ -238,7 +236,7 @@ export default {
       professionalTextSelectionIndex: -1,
       intervalId: null, // Add this to store the interval ID
       sphereScene: null,
-      spehereSceneCanvas: null,
+      sphereSceneCanvas: null,
       segmentCount: 1200,
       containerClass: "",
       canvasClass: "",
@@ -832,7 +830,7 @@ export default {
 };
 </script>
 
-<style scroped>
+<style scoped>
 .blinking-text::after {
   content: "";
   display: inline-block;
