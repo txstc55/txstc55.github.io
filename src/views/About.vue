@@ -108,7 +108,8 @@
           target="_blank"
           class="underline"
           >Tzumao Li</a
-        >. My research focuses on creating tools that facilitate writing efficient simulation code.
+        >. My research focuses on creating tools that facilitate writing
+        efficient simulation code.
       </div>
       <div
         id="sub-intro"
@@ -130,7 +131,8 @@
         class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
         @mouseover="setUpTime(timePeriods.bachelor)"
       >
-        And before that, my bachelor's degree in Data Science from the University of Rochester.
+        And before that, my bachelor's degree in Data Science from the
+        University of Rochester.
       </div>
       <div id="paper-intro" class="mt-16 p-2 text-xl select-none">
         I also have some papers, surprise surprise.
@@ -483,16 +485,21 @@ export default {
   },
   created() {},
   methods: {
+    getViewportHeight() {
+      return window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+    },
     // scroll back to last page
     scrollBack() {
-      document.documentElement.scrollTop = 5 * window.innerHeight;
+      document.documentElement.scrollTop = 5 * this.getViewportHeight();
     },
     // scroll to next page
     scrollNext() {
-      document.documentElement.scrollTop = 7 * window.innerHeight;
+      document.documentElement.scrollTop = 7 * this.getViewportHeight();
     },
-    scrollToAbout(){
-      document.documentElement.scrollTop = 6 * window.innerHeight;
+    scrollToAbout() {
+      document.documentElement.scrollTop = 6 * this.getViewportHeight();
     },
 
     // the type write effect for adding the text
