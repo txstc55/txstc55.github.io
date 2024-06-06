@@ -5,6 +5,7 @@
       'font-family': 'Asap',
       background: 'linear-gradient(to bottom, #FFFDB5, #FFFFFF)',
     }"
+    ref="introductionContainer"
   >
     <div
       class="text-6xl text-left relative shadow-sm px-10 py-20 rounded-lg hover:shadow-lg ease-in-out duration-500 hover:scale-105"
@@ -26,6 +27,7 @@
     :style="{
       'font-family': 'Asap',
     }"
+    ref="detailedIntroductionContainer"
   >
     <div
       id="sphereInfo"
@@ -492,14 +494,14 @@ export default {
     },
     // scroll back to last page
     scrollBack() {
-      document.documentElement.scrollTop = 5 * this.getViewportHeight();
+      document.documentElement.scrollTop = this.$refs.introductionContainer.offsetTop;
     },
     // scroll to next page
     scrollNext() {
-      document.documentElement.scrollTop = 7 * this.getViewportHeight();
+      document.documentElement.scrollTop = this.$refs.detailedIntroductionContainer.offsetTop + getViewportHeight();
     },
     scrollToAbout() {
-      document.documentElement.scrollTop = 6 * this.getViewportHeight();
+      document.documentElement.scrollTop = this.$refs.detailedIntroductionContainer.offsetTop;
     },
 
     // the type write effect for adding the text
