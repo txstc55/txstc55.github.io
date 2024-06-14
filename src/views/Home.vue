@@ -58,18 +58,15 @@ export default {
       hsbChoice: 0,
       ticks: 0,
       sentences: [
-        "WHAT IS THIS PLACE",
-        "WHO IS THIS",
-        "WHAT IS THIS",
-        "WHERE AM I",
-        "WHAT IS HAPPENING",
-        "WHAT IS GOING ON",
-        "WHAT'S NEXT",
-        "IS ANYONE LISTENING",
-        "WHY AM I HERE",
-        "WHO CREATED THIS",
-        "WHAT'S THE PURPOSE",
-        "WHAT'S THE POINT",
+        "CONGRATULATIONS",
+        "YOU HAVE FOUND MY PAGE",
+        "YOU HAVE REACHED XUAN TANG'S PAGE",
+        "GOOD JOB",
+        "THIS IS XUAN TANG'S PAGE",
+        "WELCOME TO MY PAGE",
+        "TAKE A LOOK AROUND",
+        "ENJOY YOUR STAY",
+        "I HOPE YOU LIKE IT",
       ],
       sentenceTextures: [],
       moebiusShader: new moebiusShader(),
@@ -131,10 +128,15 @@ export default {
       this.sentences.sort(() => 0.5 - Math.random());
       // create a concatenated sentence
       // but only for first 5 sentences
-      var joinedSentece = this.sentences.slice(0, 3).join("   ");
-      joinedSentece += "   ";
+      var joinedSentence = "";
+      for (var j = 0; j < 3; j++) {
+        joinedSentence +=
+          this.sentences[j] + " ".repeat(Math.floor(Math.random() * 8) + 4);
+      }
+      joinedSentence =
+        " ".repeat(Math.floor(Math.random() * 4) + 2) + joinedSentence;
       this.sentenceTextures.push(
-        this.generateTextureFromSentence(joinedSentece),
+        this.generateTextureFromSentence(joinedSentence),
       );
     }
   },

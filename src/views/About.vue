@@ -1,84 +1,88 @@
 <template>
-  <div
-    class="w-full h-screen flex items-center justify-center select-none relative overflow-hidden capitalize"
-    :style="{
-      'font-family': 'Asap',
-      background: 'linear-gradient(to bottom, #FFFDB5, #FFFFFF)',
-    }"
-    ref="introductionContainer"
-  >
+  <div>
     <div
-      class="text-6xl text-left relative shadow-sm px-10 py-20 rounded-lg hover:shadow-lg ease-in-out duration-500 hover:scale-105"
-      @click="scrollToAbout"
-    >
-      Let me introduce myself
-      <div class="inline-block relative">
-        <span class=""
-          >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span
-        >
-        <span class="absolute inset-0 text-red-500 inline-block blinking-text">
-          {{ professionalText.slice(0, professionalTextProgress) }}
-        </span>
-      </div>
-    </div>
-  </div>
-  <div
-    :class="containerClass"
-    :style="{
-      'font-family': 'Asap',
-    }"
-    ref="detailedIntroductionContainer"
-  >
-    <div
-      id="sphereInfo"
-      class="duration-300 ease-in-out"
-      :class="{
-        'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl':
-          showInfo,
-        'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl opacity-0 -z-10':
-          !showInfo,
+      class="w-full h-screen flex items-center justify-center select-none relative overflow-hidden capitalize"
+      :style="{
+        'font-family': 'Asap',
+        background: 'linear-gradient(to bottom, #FFFDB5, #FFFFFF)',
       }"
+      ref="introductionContainer"
     >
-      <div class="w-full mt-1 text-lg text-center capitalize">
-        What is this thing
-      </div>
-      <div class="w-full mt-2 text-md text-left mx-2">
-        This is my timeline. I believe in reincarnation, so my timeline is in a
-        loop.
-      </div>
-      <div class="w-full mt-1 text-md text-left mx-2">
-        There are 1200 segments on this loop, each representing one month, and
-        maybe I'm lucky enough to live through all of them.
-      </div>
-      <div class="w-full mt-1 text-md text-left mx-2">
-        There are three color segments,
-        <span :style="{ color: '#fe5e3f' }">─</span> means it's currently being
-        focused, <span :style="{ color: '#028391' }">─</span> means the past,
-        and <span :style="{ color: '#ccf7ff' }">─</span> means the future.
-      </div>
-      <div class="w-full mt-1 text-md text-left mx-2">
-        This loop is generated through my research.
-      </div>
-      <div class="w-full mt-4 flex justify-center mb-2">
-        <button
-          class="px-2 py-1 border border-black text-sm rounded-md scale-95 hover:scale-100 ease-in-out duration-300 hover:shadow-lg"
-          @click="showInfo = false"
-        >
-          OK
-        </button>
+      <div
+        class="text-6xl text-left relative shadow-sm px-10 py-20 rounded-lg hover:shadow-lg ease-in-out duration-500 hover:scale-105"
+        @click="scrollToAbout"
+      >
+        Let me introduce myself
+        <div class="inline-block relative">
+          <span class=""
+            >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span
+          >
+          <span
+            class="absolute inset-0 text-red-500 inline-block blinking-text"
+          >
+            {{ professionalText.slice(0, professionalTextProgress) }}
+          </span>
+        </div>
       </div>
     </div>
     <div
-      class="absolute top-1 text-black text-center left-1/2 transform -translate-x-1/2"
+      :class="containerClass"
+      :style="{
+        'font-family': 'Asap',
+      }"
+      ref="detailedIntroductionContainer"
     >
-      <button
-        class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
-        @click="scrollBack"
+      <div
+        id="sphereInfo"
+        class="duration-300 ease-in-out"
+        :class="{
+          'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl':
+            showInfo,
+          'w-84 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-black rounded-lg bg-white select-none shadow-xl opacity-0 -z-10':
+            !showInfo,
+        }"
       >
-        ↑
-      </button>
-    </div>
-    <!-- <div class="absolute bottom-1 text-black text-center left-1 transform">
+        <div class="w-full mt-1 text-lg text-center capitalize">
+          What is this thing
+        </div>
+        <div class="w-full mt-2 text-md text-left mx-2">
+          This is my timeline. I believe in reincarnation, so my timeline is in
+          a loop.
+        </div>
+        <div class="w-full mt-1 text-md text-left mx-2">
+          There are 1200 segments on this loop, each representing one month, and
+          maybe I'm lucky enough to live through all of them.
+        </div>
+        <div class="w-full mt-1 text-md text-left mx-2">
+          There are three color segments,
+          <span :style="{ color: '#f7931e' }">─</span> means it's currently
+          being focused, <span :style="{ color: '#07407b' }">─</span> means the
+          past, and <span :style="{ color: '#7fcdee' }">─</span> means the
+          future.
+        </div>
+        <div class="w-full mt-1 text-md text-left mx-2">
+          This loop is generated through my research.
+        </div>
+        <div class="w-full mt-4 flex justify-center mb-2">
+          <button
+            class="px-2 py-1 border border-black text-sm rounded-md scale-95 hover:scale-100 ease-in-out duration-300 hover:shadow-lg"
+            @click="showInfo = false"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+      <!-- <div
+        class="absolute top-1 text-black text-center left-1/2 transform -translate-x-1/2"
+      >
+        <button
+          class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
+          @click="scrollBack"
+        >
+          ↑
+        </button>
+      </div> -->
+      <!-- <div class="absolute bottom-1 text-black text-center left-1 transform">
       <button
         class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60"
         @click="showInfo = true"
@@ -86,108 +90,109 @@
         i
       </button>
     </div> -->
-    <canvas
-      ref="sphereSceneCanvas"
-      :class="canvasClass"
-      @click="showInfo = true"
-    ></canvas>
-    <div :class="divClass" @mouseleave="unsetTime()">
-      <div id="introduction" class="mt-2 p-2 text-2xl select-none">
-        Hi, I am Xuan Tang(唐煊).
-      </div>
-      <div
-        id="sub-intro"
-        class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
-        @mouseover="setUpTime(timePeriods.phd)"
-      >
-        I am currently a Ph.D. student at UCSD working with Professor
-        <a
-          href="https://cseweb.ucsd.edu/~tzli/"
-          target="_blank"
-          class="underline"
-          >Tzumao Li</a
-        >. My research focuses on creating tools that facilitate writing
-        efficient simulation code.
-      </div>
-      <div
-        id="sub-intro"
-        class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
-        @mouseover="setUpTime(timePeriods.farm)"
-      >
-        Before my Ph.D. started, I went home and became a farm boy for some
-        time.
-      </div>
-      <div
-        id="sub-intro"
-        class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
-        @mouseover="setUpTime(timePeriods.master)"
-      >
-        I obtained my master's degree in Computer Science from NYU.
-      </div>
-      <div
-        id="sub-intro"
-        class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
-        @mouseover="setUpTime(timePeriods.bachelor)"
-      >
-        And before that, my bachelor's degree in Data Science from the
-        University of Rochester.
-      </div>
-      <div id="paper-intro" class="mt-16 p-2 text-xl select-none">
-        I also have some papers, surprise surprise.
-      </div>
-      <div
-        class="paper mt-2 p-2 flex justify-between items-start hover:shadow-lg rounded-lg duration-300 ease-in-out"
-        v-for="paper in papers"
-        @mouseover="setUpTime(timePeriods[paper.title])"
-      >
-        <div class="paper-details">
-          <div class="paper-title text-2xl">{{ paper.title }}</div>
-          <a
-            class="text-md text-gray-700 mr-2 underline"
-            v-for="author in paper.authors"
-            :href="authorLinks[author]"
-            target="_blank"
-            >{{ author }}</a
-          >
-          <div class="paper-venue text-md">{{ paper.proceedings }}</div>
-          <a
-            class="paper-paper text-md underline pr-2"
-            :href="paper.paper"
-            target="_blank"
-            >Paper</a
-          >
-          <a
-            class="paper-paper text-md underline"
-            :href="paper.code"
-            target="_blank"
-            >Code</a
-          >
+      <canvas
+        ref="sphereSceneCanvas"
+        :class="canvasClass"
+        @click="showInfo = true"
+      ></canvas>
+      <div :class="divClass" @mouseleave="unsetTime()">
+        <div id="introduction" class="p-2 text-2xl select-none">
+          Hi, I am Xuan Tang(唐煊).
         </div>
-        <img :src="paper.image" class="paper-image ml-4" :alt="paper.title" />
-      </div>
-      <div id="rewards-intro" class="mt-16 p-2 text-xl select-none">
-        I guess I might as well just throw in some rewards?
-      </div>
-      <div
-        class="reward mt-2 p-2 flex justify-between items-start hover:shadow-lg rounded-lg duration-300 ease-in-out"
-        v-for="reward in rewards"
-        @mouseover="setUpTime(timePeriods[reward.title])"
-      >
-        <div class="reward-details">
-          <div class="reward-title text-2xl">{{ reward.title }}</div>
-          <div class="reward-desc text-md">{{ reward.description }}</div>
+        <div
+          id="sub-intro"
+          class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
+          @mouseover="setUpTime(timePeriods.phd)"
+        >
+          I am currently a Ph.D. student at UCSD working with Professor
+          <a
+            href="https://cseweb.ucsd.edu/~tzli/"
+            target="_blank"
+            class="underline"
+            >Tzumao Li</a
+          >. My research focuses on creating tools that facilitate writing
+          efficient simulation code.
+        </div>
+        <div
+          id="sub-intro"
+          class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
+          @mouseover="setUpTime(timePeriods.farm)"
+        >
+          Before my Ph.D. started, I went home and became a farm boy for some
+          time.
+        </div>
+        <div
+          id="sub-intro"
+          class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
+          @mouseover="setUpTime(timePeriods.master)"
+        >
+          I obtained my master's degree in Computer Science from NYU.
+        </div>
+        <div
+          id="sub-intro"
+          class="mt-2 p-2 text-2xl hover:shadow-lg duration-300 ease-in-out rounded-lg select-none"
+          @mouseover="setUpTime(timePeriods.bachelor)"
+        >
+          And before that, my bachelor's degree in Data Science from the
+          University of Rochester.
+        </div>
+        <div id="paper-intro" class="mt-16 p-2 text-xl select-none">
+          I also have some papers, surprise surprise.
+        </div>
+        <div
+          class="paper mt-2 p-2 flex justify-between items-start hover:shadow-lg rounded-lg duration-300 ease-in-out"
+          v-for="paper in papers"
+          @mouseover="setUpTime(timePeriods[paper.title])"
+        >
+          <div class="paper-details">
+            <div class="paper-title text-2xl">{{ paper.title }}</div>
+            <a
+              class="text-md text-gray-700 mr-2 underline"
+              v-for="author in paper.authors"
+              :href="authorLinks[author]"
+              target="_blank"
+              >{{ author }}</a
+            >
+            <div class="paper-venue text-md">{{ paper.proceedings }}</div>
+            <a
+              class="paper-paper text-md underline pr-2"
+              :href="paper.paper"
+              target="_blank"
+              >Paper</a
+            >
+            <a
+              class="paper-paper text-md underline"
+              :href="paper.code"
+              target="_blank"
+              >Code</a
+            >
+          </div>
+          <img :src="paper.image" class="paper-image ml-4" :alt="paper.title" />
+        </div>
+        <div id="rewards-intro" class="mt-16 p-2 text-xl select-none">
+          I guess I might as well just throw in some rewards?
+        </div>
+        <div
+          class="reward mt-2 p-2 flex justify-between items-start hover:shadow-lg rounded-lg duration-300 ease-in-out"
+          v-for="reward in rewards"
+          @mouseover="setUpTime(timePeriods[reward.title])"
+        >
+          <div class="reward-details">
+            <div class="reward-title text-2xl">{{ reward.title }}</div>
+            <div class="reward-desc text-md">{{ reward.description }}</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      class="absolute bottom-1 text-black text-center left-1/2 transform -translate-x-1/2"
-    >
-      <button
-        class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
-        @click="scrollNext"
+      <!-- <div
+        class="absolute bottom-1 text-black text-center left-1/2 transform -translate-x-1/2"
       >
-        ↓
-      </button>
+        <button
+          class="select-none text-md border-2 rounded-full scale-90 hover:scale-100 ease-in-out duration-300 font-semibold w-7 h-7 text-center text-black/60 border-black/60 hover:text-black hover:border-black"
+          @click="$emit('toProjects')"
+        >
+          ↓
+        </button>
+      </div> -->
     </div>
   </div>
 </template>
@@ -250,8 +255,8 @@ export default {
       timePeriods: {
         life: {
           begin: {
-            year: 1995,
-            month: 7,
+            year: new Date().getFullYear(),
+            month: new Date().getMonth(),
           },
           latest: {
             year: new Date().getFullYear(),
@@ -429,7 +434,7 @@ export default {
             "Denis Zorin",
             "Daniele Panozzo",
           ],
-          image: "interval.png",
+          image: "paperImages/interval.png",
         },
         {
           title: "Sparsity-Specific Code Optimization using Expression Trees",
@@ -444,7 +449,7 @@ export default {
             "Daniele Panozzo",
             "Olga Sorkine-Hornung",
           ],
-          image: "symbolic.png",
+          image: "paperImages/symbolic.png",
         },
         {
           title: "EGGS: Sparsity-Specific Code Generation",
@@ -459,7 +464,7 @@ export default {
             "Jinyang Li",
             "Daniele Panozzo",
           ],
-          image: "eggs.png",
+          image: "paperImages/eggs.png",
         },
       ],
       rewards: [
@@ -497,7 +502,7 @@ export default {
     scrollNext() {
       document.documentElement.scrollTop =
         this.$refs.detailedIntroductionContainer.offsetTop +
-        getViewportHeight();
+        this.getViewportHeight();
     },
     scrollToAbout() {
       document.documentElement.scrollTop =
@@ -580,11 +585,11 @@ export default {
       if (allSegments) {
         for (let i = 0; i < this.segmentCount; i++) {
           if (i >= beginSegment && i <= endSegment) {
-            allSegments.setColorAt(i, color.set(0xfe5e3f));
+            allSegments.setColorAt(i, color.set(0xf7931e));
           } else if (i <= latestLifeSegment) {
-            allSegments.setColorAt(i, color.set(0x028391));
+            allSegments.setColorAt(i, color.set(0x07407b));
           } else {
-            allSegments.setColorAt(i, color.set(0xccf7ff));
+            allSegments.setColorAt(i, color.set(0x7fcdee));
           }
         }
       }
@@ -676,12 +681,12 @@ export default {
       const width = window.innerWidth;
       const height = window.innerHeight;
       if (width >= height) {
-        this.containerClass = "w-full h-screen flex relative";
+        this.containerClass = "py-5 w-full h-screen flex relative";
         this.canvasClass = "bg-white h-screen flex-1 w-1/2 h-screen ";
         this.divClass =
           "h-screen bg-white flex-1 w-1/2 h-screen px-5 pt-10 overflow-y-scroll pb-4";
       } else {
-        this.containerClass = "w-full h-screen flex flex-col relative";
+        this.containerClass = "py-5 w-full h-screen flex flex-col relative";
         this.canvasClass = "bg-white h-1/2 flex-1 w-screen";
         this.divClass = "h-1/2 bg-white flex-1 w-screen overflow-y-scroll pb-4";
       }
@@ -784,7 +789,7 @@ export default {
             const cameraPosition = camera.position.clone().normalize();
             const p2Normalized = P2.clone().normalize();
             const lerpedPosition = cameraPosition
-              .lerp(p2Normalized, 0.005)
+              .lerp(p2Normalized, 0.05)
               .normalize();
             camera.position.set(
               lerpedPosition.x * cameraDistance,
@@ -805,10 +810,9 @@ export default {
   mounted() {
     // set the date to middle
     const date = new Date();
-    const life_middle = this.getMiddleDate(1995, 7);
+
+    // because we are in the middle of phd
     const phd_middle = this.getMiddleDate(2022, 9);
-    this.timePeriods.life.focus.year = life_middle.year;
-    this.timePeriods.life.focus.month = life_middle.month;
     this.timePeriods.phd.focus.year = phd_middle.year;
     this.timePeriods.phd.focus.month = phd_middle.month;
 

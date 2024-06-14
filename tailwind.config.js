@@ -32,6 +32,20 @@ module.exports = {
         2000: "2000ms",
         1500: "1500ms",
       },
+      colors: {
+        blackPearl: "#011627",
+        sale: "#B2DDF7",
+        turquoise: "#2EC4B6",
+        alizarin: "#E71D36",
+        treePoppy: "#FF9F1C",
+      },
+      zIndex: {
+        1: "1",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+      },
     },
   },
   variants: {

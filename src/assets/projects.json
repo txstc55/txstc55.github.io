@@ -1,0 +1,98 @@
+{
+  "projects": [
+    {
+      "title": "Intro",
+      "description": "I write... I lot of websites.\n Take a look!"
+    },
+    {
+      "title": "Code To Latex",
+      "description": "When writing an academic paper, sometimes we need to present some code examples. After looking online I found that people just don't really care about the style of code blocks in latex. Yes I've check minted. Yes I've checked listing. So I just wrote this so that I can at least create good code styles inside latex.",
+      "image": "code2latex.png",
+      "url": "https://txstc55.github.io/code-to-latex/"
+    },
+    {
+      "title": "Ugly Avatar",
+      "description": "I was boared, I wanted to create something, and I took the challenge to represent a face in mathematical functions. However I didn't want to create something beautiful, I wanted to create something ugly as beauty has a formula, and ugliness is chaos, which I like. Alsk 2.2k stars on github.",
+      "image": "ugly.png",
+      "url": "https://txstc55.github.io/ugly-avatar/"
+    },
+    {
+      "title": "Infinite Monkey Club",
+      "description": "I wanted to demonstrate the infinite monkey theorem. However since it would actually take infinite time for a monkey to type out the entire works of Shakespeare, I decided to create an easier version of the problem. And that is the infinite monkey club.",
+      "image": "monkey.svg",
+      "url": "https://www.infinite-monkey.club/"
+    },
+    {
+      "title": "Cover",
+      "description": "There's an old(like 2 years ago) page from stripe press which does a good very artistic effect where texts flow over a mesh. I just wanted to replicate this effect. And I can also make covers for my friends.",
+      "image": "cover.ico",
+      "url": "https://cover-beryl.vercel.app/"
+    },
+    {
+      "title": "Ducked ios",
+      "description": "Basically the ducked project, but on ios, and fixed some bugs.",
+      "image": "duck-ios.jpg",
+      "url": "https://apps.apple.com/us/app/ducked/id6466341203"
+    },
+    {
+      "title": "Stare",
+      "description": "Hmmm, how can I explain this one. I just felt like it, like I had the vision and I wanted to do it, so I did.",
+      "image": "stare.png",
+      "url": "https://txstc55.github.io/stare/"
+    },
+    {
+      "title": "Wall of Buttons",
+      "description": "BECAUSE THERE ARE TOO MANY GOD DAMN FUCKING BUTTON STYLES.",
+      "image": "buttons.svg",
+      "url": "https://txstc55.github.io/wall-of-buttons/"
+    },
+    {
+      "title": "Prisms",
+      "description": "A place for people to leave messages, and maybe, if you are lucky, you can find other people's messages here.",
+      "image": "prism.svg",
+      "url": "https://txstc55.github.io/prisms/"
+    },
+    {
+      "title": "Moebius Shader",
+      "description": "Ok, so I was talking to my friend and she was asking about toon shaders. And I remembered seeing the moebius shader style and said well they also released the code so you can take a look at it. Turns out they didn't, and they implemented it in shader graph. So, knowing this is a challenge, I decided to implemented this in shader myself.",
+      "image": "moebius.png",
+      "url": "https://txstc55.github.io/moebius-effect-threejs/"
+    },
+    {
+      "title": "Duck Duck Duck",
+      "description": "I just want to generate some cute looking ducks, without AI, just pure math.",
+      "image": "duck-web.png",
+      "url": "https://txstc55.github.io/duck-duck-duck/"
+    },
+    {
+      "title": "Simple Avatar",
+      "description": "Was thinking about making a website someday that requires user login, and this calls for an avatar generator. And this is the result",
+      "image": "simple-avatar.png",
+      "url": "https://txstc55.github.io/simple-avatar/"
+    },
+    {
+      "title": "Cat",
+      "description": "I guess I saw the cat? Well I wanted to represent a mesh in some creative way, and I wanted to do this inside shader. So I sliced up the cat.",
+      "image": "cat.gif",
+      "url": "https://txstc55.github.io/cat/"
+    },
+    {
+      "title": "Rabbit",
+      "description": "Follow the god damn rabbit!",
+      "image": "rabbit.gif",
+      "url": "https://txstc55.github.io/rabbit/"
+    },
+    {
+      "title": "Solitude",
+      "description": "I was depressed.",
+      "image": "loneliness.svg",
+      "url": "https://loneliness.one/"
+    },
+    {
+      "title": "Lazy Leetcode",
+      "description": "I was thinking about learning rust, and what better way to do it other than doing leetcode questions? So I started grinding, and I couldn't even do one problem. And I had to constantly check for top answers. So I got frustrated, and decided to write a plugin that checks the top result for me. It doesn't work anymore because leetcode finally realized how shitty it was to go back and forth between two pages to fetch answer.",
+      "image": "lazy_leetcode.png",
+      "url": "https://chromewebstore.google.com/detail/lazy-leetcode/icdpjiahfgenfpnflmbiagkangppiaah?hl=en"
+    }
+  ]
+}
